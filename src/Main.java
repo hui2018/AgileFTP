@@ -16,7 +16,6 @@ import org.apache.commons.net.ftp.FTPClient;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
         try {
             //create server
             FTPClient ftp = new FTPClient();
@@ -42,6 +41,7 @@ public class Main {
             while (s.UserInput()) {
             }
 
+            System.out.println("Logged out successfully!");
             ftp.logout();
             ftp.disconnect();
         } catch (IOException ex) {

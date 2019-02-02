@@ -55,7 +55,7 @@ public class Shell {
                 break;
             default:
                 System.out.println("Not a valid function.");
-                System.out.println("type 'q' to exit");
+                System.out.println("type 'q' to logout");
         }
 
         return rv;
