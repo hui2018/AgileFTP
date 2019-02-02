@@ -53,6 +53,14 @@ public class Shell {
             case "q":
                 rv = false;
                 break;
+            case "put":
+                //put file to remote server example: put c:\filelocation\testing.txt
+            case "putmulti":
+                //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
+            case "get":
+                //get files from server example: get c:\server\file.txt
+            case "getmulti":
+                //get multiple files from server example: getmulti c:\server\file.txt c:\other\test.img
             default:
                 System.out.println("Not a valid function.");
                 System.out.println("type 'q' to logout");
