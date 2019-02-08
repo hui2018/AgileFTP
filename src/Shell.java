@@ -15,7 +15,7 @@ Changelog (insert new changes at top)
 //and add a case
 //READ ME
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Shell {
@@ -23,6 +23,7 @@ public class Shell {
     //Vars and constructors
     //------------------------------
     private int TimeOut;
+    private int Timer;
     private Scanner sc;
 
     public Shell() {}
@@ -40,10 +41,11 @@ public class Shell {
     //User input gathering loop
     //-------------------------------
     public boolean UserInput () {
+        System.out.print("shell->");
         boolean rv = true;
-        sc = new Scanner(System.in);
+
         String UserIn = sc.nextLine();
-        String [] UserInCom = UserIn.split(">");
+        String [] UserInCom = UserIn.trim().split("\\s*>\\s*");
 
         //shell switch
         switch (UserInCom[0]) {
@@ -65,9 +67,15 @@ public class Shell {
             case "getmulti":
                 //get multiple files from server example: getmulti c:\server\file.txt c:\other\test.img
                 break;
+            case "help":
+                help();
+                break;
+            case "h":
+                help();
+                break;
             default:
-                System.out.println("Not a valid function.");
-                System.out.println("type 'q' to logout");
+                System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
+                System.out.println("Type 'q' to logout.");
         }
 
         return rv;
@@ -75,6 +83,8 @@ public class Shell {
 
     //Functions called by shell input
     //-------------------------------
+
+    //sum function used for testing purposes
     private int sum (String[] inputs)
     {
         int ret = 0;
@@ -87,5 +97,17 @@ public class Shell {
             }
         }
         return ret;
+    }
+
+    //---------------DO NOT PLACE FUNCTIONS BELOW THIS POINT----------------//
+    //Help function
+    //LEAVE THIS AT THE BOTTOM FOR READABILITY
+    private void help ()
+    {
+        System.out.println("The following is a list of functions available in this client:\n" +
+                "sum>(integer)>(integer)>...>(integer)\n\tSums up all following integers. Ignores other arguments.\n" +
+                "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
+                "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
+                "");
     }
 }
