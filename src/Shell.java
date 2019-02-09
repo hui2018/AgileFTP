@@ -5,6 +5,10 @@ FTP Client Shell code
 Changelog (insert new changes at top)
 -------------
 
+2/9/19: Moved login into the shell
+
+2/7/19: Added help and timeout functionality - Nick H
+
 11/31/2019: Created class - Nick H
 
 /----------------------------*/
@@ -17,25 +21,29 @@ Changelog (insert new changes at top)
 
 import java.io.*;
 import java.util.Scanner;
+import org.apache.commons.net.ftp.FTPClient;
 
 public class Shell {
 
     //Vars and constructors
     //------------------------------
     private int TimeOut;
-    private int Timer;
     private Scanner sc;
+    private FTPClient ftp;
 
     public Shell() {}
 
     public Shell(Scanner sc){
         this.sc = sc;
+        this.TimeOut = 30*1000;
+        ftp = new FTPClient();
     }
 
     public Shell(Scanner sc, int TimeOut) {
         this.sc = sc;
-        //If we get to timeouts, place timeout length here
-        this.TimeOut = TimeOut;
+        this.TimeOut = TimeOut * 1000;
+        ftp = new FTPClient();
+        LogIn(null);
     }
 
     //User input gathering loop
@@ -44,7 +52,7 @@ public class Shell {
         System.out.print("shell->");
         boolean rv = true;
 
-        String UserIn = sc.nextLine();
+        String UserIn = TOInput();
         String [] UserInCom = UserIn.trim().split("\\s*>\\s*");
 
         //shell switch
@@ -54,6 +62,13 @@ public class Shell {
                 break;
             case "q":
                 rv = false;
+                LogOut(UserInCom);
+                break;
+            case "login":
+                LogIn(UserInCom);
+                break;
+            case "logout":
+                LogOut(UserInCom);
                 break;
             case "put":
                 //put file to remote server example: put c:\filelocation\testing.txt
@@ -72,6 +87,9 @@ public class Shell {
                 break;
             case "h":
                 help();
+                break;
+            case "--to":
+                TOShift(UserInCom);
                 break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
@@ -99,13 +117,102 @@ public class Shell {
         return ret;
     }
 
-    //---------------DO NOT PLACE FUNCTIONS BELOW THIS POINT----------------//
+    private void LogIn (String[] inputs)
+    {
+        try {
+            //TODO: unhandled exception when entering a non-int as the port
+            //create server
+
+            ServerCheck server = new ServerCheck();
+
+            //get server information
+            String serverAddress = server.getServer();
+            int port = server.getPort();
+            String userId = server.getUser();
+            String password = server.getPassword();
+            //connect to server
+            ftp.connect(serverAddress, port);
+
+            //login to server
+            if (!ftp.login(userId, password)) {
+                ftp.logout();
+                ftp.disconnect();
+                System.out.println("Login Error");
+            }
+            else
+            {
+                System.out.println("Login successfull.\nYou are now connected.");
+            }
+        }
+        catch (IOException ex) {
+            System.out.println("Unable to connect to server");
+            //ex.printStackTrace();
+        }
+    }
+
+    private void LogOut (String[] inputs)
+    {
+        try {
+            ftp.logout();
+            ftp.disconnect();
+            System.out.println("Logout successful.");
+        }
+        catch (IOException e)
+        {
+            //TODO: Only show this if there was actually a server connection to begin with
+            //IE: currently, if you logout, then quit, this will always trigger
+            System.out.println("Something went wrong.");
+        }
+    }
+
+    //---------------DO NOT PLACE COMMAND FUNCTIONS BELOW THIS POINT----------------//
+    //-----------------------INNER SHELL FUNCTIONALITY ONLY-------------------------//
+    //Timeout Function
+    private String TOInput()
+    {
+        try {
+            BufferedReader UserIn = new BufferedReader(new InputStreamReader(System.in));
+            long StartTime = System.currentTimeMillis();
+            while ((System.currentTimeMillis() - StartTime) < TimeOut && !UserIn.ready())
+            { /*Condition causes us to wait until timeout or user input*/ }
+
+            if (UserIn.ready()) {
+                return UserIn.readLine();
+            }
+            else
+            {
+                System.out.println("\nNo commands entered in " + TimeOut/1000 + " seconds.\n" +
+                        "Shell timed out.");
+                return "q";
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("If you're seeing this, I messed up!");
+        }
+        return "";
+    }
+
+    //modify timeout
+    private void TOShift(String[] s)
+    {
+        try {
+            TimeOut = Integer.parseInt(s[1]) * 1000;
+            System.out.println("Timeout value changed to " + TimeOut/1000 + " seconds.");
+        }
+        catch (Exception e)
+        {
+            System.out.println("Not a valid timeout value.");
+        }
+    }
+
     //Help function
     //LEAVE THIS AT THE BOTTOM FOR READABILITY
     private void help ()
     {
         System.out.println("The following is a list of functions available in this client:\n" +
-                "sum>(integer)>(integer)>...>(integer)\n\tSums up all following integers. Ignores other arguments.\n" +
+                "login\n\tStarts prompts to log in to a server.\n" +
+                "logout\n\tLogs out of the currently connected server.\n" +
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
                 "");
