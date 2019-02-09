@@ -213,6 +213,7 @@ public class Shell {
     {
         FileOutputStream outPut = null;
         try {
+
             outPut = new FileOutputStream(filePath[1]);
             ftp.retrieveFile("/" + filePath[1], outPut);
         } catch (FileNotFoundException e) {
@@ -234,6 +235,19 @@ public class Shell {
             System.out.println("Please enter a file path");
             return false;
         }
+        InputStream input = null;
+        try {
+            input = ftp.retrieveFileStream(filePath[1]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int returnCode = ftp.getReplyCode();
+        if(input == null || returnCode == 550)
+        {
+            System.out.println("File does not exist");
+            return false;
+        }
+
         return true;
     }
 
