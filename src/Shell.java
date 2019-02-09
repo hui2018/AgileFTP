@@ -35,7 +35,7 @@ public class Shell {
 
     public Shell(Scanner sc){
         this.sc = sc;
-        this.TimeOut = 30*1000;
+        this.TimeOut = 120*1000;
         ftp = new FTPClient();
     }
 
@@ -214,7 +214,10 @@ public class Shell {
         FileOutputStream outPut = null;
         try {
             outPut = new FileOutputStream(filePath[1]);
+            ftp.retrieveFile("/" + filePath[1], outPut);
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
