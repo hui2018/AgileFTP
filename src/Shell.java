@@ -77,6 +77,8 @@ public class Shell {
                 //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
                 break;
             case "get":
+                if(CheckSingleGetPutCommand(UserInCom))
+                    GetFile(UserInCom);
                 //get files from server example: get c:\server\file.txt
                 break;
             case "getmulti":
@@ -204,6 +206,32 @@ public class Shell {
         {
             System.out.println("Not a valid timeout value.");
         }
+    }
+
+    //get file from remote server
+    private void GetFile(String[] filePath)
+    {
+        FileOutputStream outPut = null;
+        try {
+            outPut = new FileOutputStream(filePath[1]);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //check if too many command or too little command
+    private boolean CheckSingleGetPutCommand(String[] filePath){
+        if(filePath.length >= 3)
+        {
+            System.out.println("Too many commands");
+            return false;
+        }
+        else if(filePath.length == 1)
+        {
+            System.out.println("Please enter a file path");
+            return false;
+        }
+        return true;
     }
 
     //Help function
