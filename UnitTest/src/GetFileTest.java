@@ -21,8 +21,8 @@ public class GetFileTest {
             ftp.login(userId, password);
             String[] noFile = new String[]{"get", "nofile.txt"};
             String[] yesFile = new String[]{"get","test.txt"};
-            s.GetFile(noFile);
-            s.GetFile(yesFile);
+            //s.GetFile(noFile);
+            //s.GetFile(yesFile);
             ftp.logout();
         }catch(IOException e){}
     }
