@@ -21,7 +21,15 @@ Changelog (insert new changes at top)
 
 import java.io.*;
 import java.util.Scanner;
+import java.io.InputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 
 public class Shell {
 
@@ -83,6 +91,9 @@ public class Shell {
                 break;
             case "getmulti":
                 //get multiple files from server example: getmulti c:\server\file.txt c:\other\test.img
+                break;
+            case "ls":
+                ListDirectoriesAndFiles(UserInCom);
                 break;
             case "help":
                 help();
@@ -211,13 +222,26 @@ public class Shell {
     //get file from remote server
     private void GetFile(String[] filePath)
     {
-        FileOutputStream outPut = null;
+        FileOutputStream fos = null;
+        ftp.enterLocalPassiveMode();
         try {
-
-            outPut = new FileOutputStream(filePath[1]);
-            ftp.retrieveFile("/" + filePath[1], outPut);
+            ftp.setFileType(FTP.BINARY_FILE_TYPE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            fos = new FileOutputStream(filePath[1]);
+            ftp.retrieveFile("/" +filePath[1], fos);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try{
+            if(fos !=null)
+            {
+                fos.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -249,6 +273,27 @@ public class Shell {
         }
 
         return true;
+    }
+
+    //print out directories and files on remote server
+    private void ListDirectoriesAndFiles(String[] input)
+    {
+        FTPFile[] ftpFiles;
+        try {
+            ftpFiles = ftp.listFiles();
+            if (ftpFiles != null && ftpFiles.length > 0) {
+                //loop thru files
+                for (FTPFile file : ftpFiles) {
+                    if (file.isFile()) {
+                        System.out.println("File is " + file.getName());
+                    } else if (file.isDirectory()){
+                        System.out.println("Directory is " + file.getName());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Help function
