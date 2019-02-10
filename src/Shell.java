@@ -235,6 +235,7 @@ public class Shell {
                         ftp.retrieveFile(filePath[1],dfile);
                         dfile.close();
                         checker = false;
+                        System.out.println("File exist on server");
                     }
                 }
                 if(checker)
