@@ -108,7 +108,7 @@ public class Shell {
                 break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
-                System.out.println("Type 'q' to logout.");
+                System.out.println("Type 'q' or 'logout' to logout.");
         }
 
         return rv;
