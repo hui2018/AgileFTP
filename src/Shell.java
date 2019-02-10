@@ -85,12 +85,14 @@ public class Shell {
                 //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
                 break;
             case "get":
+                //check there is only one file on command line by limit the command argument then run the function
                 if(CheckSingleGetPutCommand(UserInCom))
                     GetFile(UserInCom);
-                //get files from server example: get c:\server\file.txt
                 break;
             case "getmulti":
-                //get multiple files from server example: getmulti c:\server\file.txt c:\other\test.img
+                //pass in multiple files
+                if(CheckMultipleGetPutCommand(UserInCom))
+                    GetMultipleFiles(UserInCom);
                 break;
             case "ls":
                 ListDirectoriesAndFiles(UserInCom);
@@ -253,6 +255,38 @@ public class Shell {
             return false;
         }
         else if(filePath.length == 1)
+        {
+            System.out.println("Please enter a file path");
+            return false;
+        }
+        return true;
+    }
+
+    private void GetMultipleFiles (String[] filePath)
+    {
+        FTPFile[] ftpFiles;
+        try {
+            ftpFiles = ftp.listFiles();
+            for(int i = 1; i<filePath.length; ++i)
+            {
+                for (FTPFile file : ftpFiles) {
+                    if(file.getName().contentEquals(filePath[i]))
+                    {
+                        File files = new File(filePath[i]);
+                        ftp.enterLocalPassiveMode();
+                        FileOutputStream dfile = new FileOutputStream(files);
+                        ftp.retrieveFile(filePath[i],dfile);
+                        dfile.close();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean CheckMultipleGetPutCommand(String[] filePath){
+        if(filePath.length == 1)
         {
             System.out.println("Please enter a file path");
             return false;

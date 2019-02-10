@@ -1,12 +1,8 @@
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
 
-public class GetFileTest {
+public class GetMultiFileTest {
     public static void main(String[] args) {
         FTPClient ftp;
         String serverAddress = "localhost";
@@ -19,10 +15,12 @@ public class GetFileTest {
             port = 21;
             ftp.connect(serverAddress, port);
             ftp.login(userId, password);
-            String[] noFile = new String[]{"get", "nofile.txt"};
-            String[] yesFile = new String[]{"get","test.txt"};
-            //s.GetFile(noFile);
-            //s.GetFile(yesFile);
+            String[] noFile = new String[]{"getmulti", "nofile.txt"};
+            String[] yesFile = new String[]{"getmulti","test.txt"};
+            String[] mutliFile = new String[]{"getmulti", "test.txt", "myfile.txt", "asdf.nothing"};
+            //s.GetMultipleFiles(noFile);
+            //s.GetMultipleFiles(yesFile);
+            //s.GetMultipleFiles(multiFile);
             ftp.logout();
         }catch(IOException e){
             e.printStackTrace();
