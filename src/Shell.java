@@ -222,26 +222,23 @@ public class Shell {
     //get file from remote server
     private void GetFile(String[] filePath)
     {
-        FileOutputStream fos = null;
-        ftp.enterLocalPassiveMode();
+        FTPFile[] ftpFiles;
+        boolean checker = true;
         try {
-            ftp.setFileType(FTP.BINARY_FILE_TYPE);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fos = new FileOutputStream(filePath[1]);
-            ftp.retrieveFile("/" +filePath[1], fos);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try{
-            if(fos !=null)
-            {
-                fos.close();
-            }
+            ftpFiles = ftp.listFiles();
+                for (FTPFile file : ftpFiles) {
+                    if(file.getName().contentEquals(filePath[1]))
+                    {
+                        File files = new File(filePath[1]);
+                        ftp.enterLocalPassiveMode();
+                        FileOutputStream dfile = new FileOutputStream(files);
+                        ftp.retrieveFile(filePath[1],dfile);
+                        dfile.close();
+                        checker = false;
+                    }
+                }
+                if(checker)
+                    System.out.println("File does not exist on server");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -259,19 +256,6 @@ public class Shell {
             System.out.println("Please enter a file path");
             return false;
         }
-        InputStream input = null;
-        try {
-            input = ftp.retrieveFileStream(filePath[1]);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int returnCode = ftp.getReplyCode();
-        if(input == null || returnCode == 550)
-        {
-            System.out.println("File does not exist");
-            return false;
-        }
-
         return true;
     }
 
