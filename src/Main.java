@@ -21,7 +21,7 @@ public class Main {
         //TODO all shell commands
         //Build shell with IO scanner
         Scanner sc = new Scanner(System.in);
-        int TimeOut = 30;
+        int TimeOut = 120;
         System.out.println("Current shell timeout between commands is set to " + TimeOut + " seconds.");
         Shell s = new Shell(sc, TimeOut);
         //loop getting user input

@@ -43,7 +43,7 @@ public class Shell {
 
     public Shell(Scanner sc){
         this.sc = sc;
-        this.TimeOut = 120*1000;
+        this.TimeOut = 30*1000;
         ftp = new FTPClient();
     }
 
