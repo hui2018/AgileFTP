@@ -2,6 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0193a12b-b11c-4972-a85f-c75168924506" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AgileFTP/LogHistory.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AgileFTP/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AgileFTP/ServerCheck.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/AgileFTP/Shell.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/test/AgileFTP/GetFileTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/test/AgileFTP/GetMultiFileTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/test/AgileFTP/ServerLogin.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/LogHistory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Shell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Shell.java" afterDir="false" />
     </list>
@@ -38,7 +46,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Shell.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="104">
@@ -52,7 +60,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/LogHistory.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
@@ -118,7 +126,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550124397001" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550124642885" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -165,7 +173,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
       <window_info id="Designer" />
@@ -174,13 +181,13 @@
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17857143" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" weight="0.3298731" />
-      <window_info anchor="bottom" id="Terminal" sideWeight="0.49946696" weight="0.30653805" />
+      <window_info anchor="bottom" id="Version Control" weight="0.3290461" />
+      <window_info active="true" anchor="bottom" id="Terminal" sideWeight="0.49946696" visible="true" weight="0.30653805" />
       <window_info anchor="bottom" id="Event Log" sideWeight="0.50053304" side_tool="true" weight="0.30653805" />
       <window_info anchor="bottom" id="Messages" weight="0.3290461" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3290461" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3290461" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -235,18 +242,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Shell.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
-          <folding>
-            <element signature="e#0#10203#0" expanded="true" />
-            <element signature="e#969#970#0" expanded="true" />
-            <element signature="e#1020#1021#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/LogHistory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -255,6 +250,18 @@
             <element signature="imports" expanded="true" />
             <element signature="e#128#129#0" expanded="true" />
             <element signature="e#160#161#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Shell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+          <folding>
+            <element signature="e#0#10203#0" expanded="true" />
+            <element signature="e#969#970#0" expanded="true" />
+            <element signature="e#1020#1021#0" expanded="true" />
           </folding>
         </state>
       </provider>
