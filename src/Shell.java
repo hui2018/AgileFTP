@@ -80,6 +80,7 @@ public class Shell {
                 break;
             case "put":
                 //put file to remote server example: put c:\filelocation\testing.txt
+                    PutFile(UserInCom);
                 break;
             case "putmulti":
                 //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
@@ -218,6 +219,18 @@ public class Shell {
         catch (Exception e)
         {
             System.out.println("Not a valid timeout value.");
+        }
+    }
+
+    private void PutFile(String[] filePath){
+        String fileName = filePath[1];
+
+        try {
+                FileInputStream fis = new FileInputStream(fileName);
+                ftp.storeFile(fileName, fis);
+                fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
