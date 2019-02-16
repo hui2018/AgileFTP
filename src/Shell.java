@@ -86,7 +86,7 @@ public class Shell {
                 break;
             case "get":
                 //check there is only one file on command line by limit the command argument then run the function
-                if(CheckSingleGetPutCommand(UserInCom))
+                if(CheckCommands(UserInCom))
                     GetFile(UserInCom);
                 break;
             case "getmulti":
@@ -96,6 +96,10 @@ public class Shell {
                 break;
             case "ls":
                 ListDirectoriesAndFiles(UserInCom);
+                break;
+            case "local":
+                if(CheckCommands(UserInCom))
+                    ListLocalDirectoriesAndFiles(UserInCom);
                 break;
             case "help":
                 help();
@@ -110,7 +114,6 @@ public class Shell {
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
                 System.out.println("Type 'q' or 'logout' to logout.");
         }
-
         return rv;
     }
 
@@ -248,7 +251,7 @@ public class Shell {
     }
 
     //check if too many command or too little command
-    private boolean CheckSingleGetPutCommand(String[] filePath){
+    private boolean CheckCommands(String[] filePath){
         if(filePath.length >= 3)
         {
             System.out.println("Too many commands");
@@ -256,7 +259,7 @@ public class Shell {
         }
         else if(filePath.length == 1)
         {
-            System.out.println("Please enter a file path");
+            System.out.println("Please enter a existing path");
             return false;
         }
         return true;
@@ -312,6 +315,25 @@ public class Shell {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    //list out all of the directories and files with a given directory
+    private void ListLocalDirectoriesAndFiles(String[] input)
+    {
+        File directory = new File(input[1]);
+        File [] list = directory.listFiles();
+        if(list == null)
+        {
+            System.out.println("Directory does not exist");
+            return;
+        }
+        for(File file:list)
+        {
+            if(file.isFile())
+                System.out.println("File is " + file.getName());
+            else if(file.isDirectory())
+                System.out.println("Directory is " + file.getName());
         }
     }
 
