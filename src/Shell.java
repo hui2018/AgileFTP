@@ -101,6 +101,10 @@ public class Shell {
                 if(CheckCommands(UserInCom))
                     ListLocalDirectoriesAndFiles(UserInCom);
                 break;
+            case "rename":
+                if(RenameFileCheck(UserInCom))
+                    RenameFileOnServer(UserInCom);
+                break;
             case "help":
                 help();
                 break;
@@ -334,6 +338,37 @@ public class Shell {
                 System.out.println("File is " + file.getName());
             else if(file.isDirectory())
                 System.out.println("Directory is " + file.getName());
+        }
+    }
+
+    private boolean RenameFileCheck(String[] input)
+    {
+        if(input.length <= 2)
+        {
+            System.out.println("Please enter a existing file path and a new file path name");
+            return false;
+        }
+        if(input.length >3)
+        {
+            System.out.println("Too many commands");
+            return false;
+        }
+        return true;
+    }
+
+    //rename a file name on remote server
+    private void RenameFileOnServer(String [] input)
+    {
+        String oldName = input[1];
+        String newName = input[2];
+        try {
+            boolean check = ftp.rename(oldName, newName);
+            if(check)
+                System.out.println(oldName + " was successfully renamed to: " + newName);
+            else
+                System.out.println(oldName + " was not successfully renamed to: " + newName);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
