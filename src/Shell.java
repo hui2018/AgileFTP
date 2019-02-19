@@ -80,6 +80,7 @@ public class Shell {
                 break;
             case "put":
                 //put file to remote server example: put c:\filelocation\testing.txt
+                if(CheckSingleGetPutCommand(UserInCom))
                     PutFile(UserInCom);
                 break;
             case "putmulti":
@@ -222,15 +223,25 @@ public class Shell {
         }
     }
 
-    private void PutFile(String[] filePath){
-        String fileName = filePath[1];
+    private void PutFile(String[] filePath) {
+        //String fileName = filePath[1];
+        //boolean result = false;
+        File fileTest = new File(filePath[1]);
 
-        try {
-                FileInputStream fis = new FileInputStream(fileName);
-                ftp.storeFile(fileName, fis);
+        if (fileTest.exists()) {
+            try {
+                ftp.enterLocalPassiveMode();
+
+                FileInputStream fis = new FileInputStream(fileTest);
+                ftp.storeFile(filePath[1], fis);
                 fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            System.out.println("File Does Not Exist.");
         }
     }
 
