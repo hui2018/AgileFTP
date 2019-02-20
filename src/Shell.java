@@ -105,6 +105,10 @@ public class Shell {
                 if(RenameFileCheck(UserInCom))
                     RenameFileOnServer(UserInCom);
                 break;
+            case "renamelocal":
+                if(RenameFileCheck(UserInCom))
+                    RenameFileOnLocalMachine(UserInCom);
+                break;
             case "help":
                 help();
                 break;
@@ -370,6 +374,18 @@ public class Shell {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //rename a file name on local machine
+    private void RenameFileOnLocalMachine(String [] input)
+    {
+        File oldName = new File(input[1]);
+        File newName = new File(input[2]);
+        boolean check = oldName.renameTo(newName);
+        if(check)
+            System.out.println(oldName + " was successfully renamed to: " + newName);
+        else
+            System.out.println(oldName + " was not successfully renamed to: " + newName);
     }
 
     //Help function
