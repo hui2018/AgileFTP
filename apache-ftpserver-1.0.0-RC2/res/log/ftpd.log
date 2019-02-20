@@ -41,3 +41,67 @@
 [ INFO] 2019-02-19 16:05:45,388 [] [] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]: org.springframework.beans.factory.support.DefaultListableBeanFactory@bccb269
 [ INFO] 2019-02-19 16:05:45,402 [] [] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@bccb269: defining beans [org.apache.ftpserver.listener.ListenerFactory#0,org.apache.ftpserver.usermanager.PropertiesUserManagerFactory#0,org.apache.ftpserver.FtpServerFactory#0,myServer]; root of factory hierarchy
 [ INFO] 2019-02-19 16:05:45,603 [] [] FTP server started
+[ INFO] 2019-02-19 19:20:05,569 [] [] Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@8e24743: display name [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]; startup date [Tue Feb 19 19:20:05 PST 2019]; root of context hierarchy
+[ INFO] 2019-02-19 19:20:05,630 [] [] Loading XML bean definitions from file [/Users/kedward/IdeaProjects/Agile/AgileFTP/apache-ftpserver-1.0.0-RC2/res/conf/ftpd-typical.xml]
+[ INFO] 2019-02-19 19:20:05,996 [] [] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]: org.springframework.beans.factory.support.DefaultListableBeanFactory@bccb269
+[ INFO] 2019-02-19 19:20:06,014 [] [] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@bccb269: defining beans [org.apache.ftpserver.listener.ListenerFactory#0,org.apache.ftpserver.usermanager.PropertiesUserManagerFactory#0,org.apache.ftpserver.FtpServerFactory#0,myServer]; root of factory hierarchy
+[ INFO] 2019-02-19 19:20:06,214 [] [] FTP server started
+[ WARN] 2019-02-19 19:20:55,798 [] [127.0.0.1] CREATED
+[ WARN] 2019-02-19 19:20:55,806 [] [127.0.0.1] OPENED
+[ WARN] 2019-02-19 19:20:55,816 [] [127.0.0.1] SENT: 220 Service ready for new user.
+
+[ INFO] 2019-02-19 19:20:55,819 [] [127.0.0.1] RECEIVED: USER ADMIN
+[ WARN] 2019-02-19 19:20:55,822 [admin] [127.0.0.1] SENT: 331 User name okay, need password for admin.
+
+[ INFO] 2019-02-19 19:20:55,822 [admin] [127.0.0.1] RECEIVED: PASS *****
+[ INFO] 2019-02-19 19:20:55,828 [admin] [127.0.0.1] Login success - admin
+[ WARN] 2019-02-19 19:20:55,829 [admin] [127.0.0.1] SENT: 230 User logged in, proceed.
+
+[ INFO] 2019-02-19 19:20:57,682 [admin] [127.0.0.1] RECEIVED: SYST
+[ WARN] 2019-02-19 19:20:57,683 [admin] [127.0.0.1] SENT: 215 UNIX Type: Apache FtpServer
+
+[ INFO] 2019-02-19 19:20:57,739 [admin] [127.0.0.1] RECEIVED: PORT 127,0,0,1,206,194
+[ WARN] 2019-02-19 19:20:57,743 [admin] [127.0.0.1] SENT: 200 Command PORT okay.
+
+[ INFO] 2019-02-19 19:20:57,743 [admin] [127.0.0.1] RECEIVED: LIST
+[ WARN] 2019-02-19 19:20:57,755 [admin] [127.0.0.1] SENT: 150 File status okay; about to open data connection.
+
+[ WARN] 2019-02-19 19:20:57,755 [admin] [127.0.0.1] SENT: 226 Closing data connection.
+
+[ INFO] 2019-02-19 19:21:03,190 [admin] [127.0.0.1] RECEIVED: PORT 127,0,0,1,206,196
+[ WARN] 2019-02-19 19:21:03,192 [admin] [127.0.0.1] SENT: 200 Command PORT okay.
+
+[ INFO] 2019-02-19 19:21:03,192 [admin] [127.0.0.1] RECEIVED: LIST
+[ WARN] 2019-02-19 19:21:03,199 [admin] [127.0.0.1] SENT: 150 File status okay; about to open data connection.
+
+[ WARN] 2019-02-19 19:21:03,200 [admin] [127.0.0.1] SENT: 226 Closing data connection.
+
+[ WARN] 2019-02-19 19:22:26,218 [admin] [127.0.0.1] CLOSED
+[ INFO] 2019-02-19 19:42:47,094 [] [] Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@8e24743: display name [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]; startup date [Tue Feb 19 19:42:47 PST 2019]; root of context hierarchy
+[ INFO] 2019-02-19 19:42:47,163 [] [] Loading XML bean definitions from file [/Users/kedward/IdeaProjects/Agile/AgileFTP/apache-ftpserver-1.0.0-RC2/res/conf/ftpd-typical.xml]
+[ INFO] 2019-02-19 19:42:47,447 [] [] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]: org.springframework.beans.factory.support.DefaultListableBeanFactory@2002fc1d
+[ INFO] 2019-02-19 19:42:47,463 [] [] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@2002fc1d: defining beans [org.apache.ftpserver.listener.ListenerFactory#0,org.apache.ftpserver.usermanager.PropertiesUserManagerFactory#0,org.apache.ftpserver.FtpServerFactory#0,myServer]; root of factory hierarchy
+[ INFO] 2019-02-19 19:42:47,658 [] [] FTP server started
+[ WARN] 2019-02-19 19:43:07,361 [] [127.0.0.1] CREATED
+[ WARN] 2019-02-19 19:43:07,368 [] [127.0.0.1] OPENED
+[ WARN] 2019-02-19 19:43:07,378 [] [127.0.0.1] SENT: 220 Service ready for new user.
+
+[ INFO] 2019-02-19 19:43:07,381 [] [127.0.0.1] RECEIVED: USER ADMIN
+[ WARN] 2019-02-19 19:43:07,384 [admin] [127.0.0.1] SENT: 331 User name okay, need password for admin.
+
+[ INFO] 2019-02-19 19:43:07,384 [admin] [127.0.0.1] RECEIVED: PASS *****
+[ INFO] 2019-02-19 19:43:07,390 [admin] [127.0.0.1] Login success - admin
+[ WARN] 2019-02-19 19:43:07,390 [admin] [127.0.0.1] SENT: 230 User logged in, proceed.
+
+[ INFO] 2019-02-19 19:43:08,930 [admin] [127.0.0.1] RECEIVED: SYST
+[ WARN] 2019-02-19 19:43:08,934 [admin] [127.0.0.1] SENT: 215 UNIX Type: Apache FtpServer
+
+[ INFO] 2019-02-19 19:43:08,980 [admin] [127.0.0.1] RECEIVED: PORT 127,0,0,1,207,31
+[ WARN] 2019-02-19 19:43:08,984 [admin] [127.0.0.1] SENT: 200 Command PORT okay.
+
+[ INFO] 2019-02-19 19:43:08,984 [admin] [127.0.0.1] RECEIVED: LIST
+[ WARN] 2019-02-19 19:43:08,996 [admin] [127.0.0.1] SENT: 150 File status okay; about to open data connection.
+
+[ WARN] 2019-02-19 19:43:08,996 [admin] [127.0.0.1] SENT: 226 Closing data connection.
+
+[ WARN] 2019-02-19 19:43:15,339 [admin] [127.0.0.1] CLOSED
