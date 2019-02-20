@@ -85,27 +85,31 @@ public class Shell {
                 //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
                 break;
             case "get":
-                //check there is only one file on command line by limit the command argument then run the function
+                //to test enter get>"path of file on server"
                 if(CheckCommands(UserInCom))
                     GetFile(UserInCom);
                 break;
             case "getmulti":
-                //pass in multiple files
+                //to test enter get>"path of file on server">"path of file on server">
                 if(CheckMultipleGetPutCommand(UserInCom))
                     GetMultipleFiles(UserInCom);
                 break;
             case "ls":
+                //to test just enter ls
                 ListDirectoriesAndFiles(UserInCom);
                 break;
             case "local":
+                //to test enter local>"path on local machine"
                 if(CheckCommands(UserInCom))
                     ListLocalDirectoriesAndFiles(UserInCom);
                 break;
             case "rename":
+                //to test enter rename>"file name on server">"new file name"
                 if(RenameFileCheck(UserInCom))
                     RenameFileOnServer(UserInCom);
                 break;
             case "renamelocal":
+                //to test enter renamelocal>"file path on local machine">"new file name on local machine"
                 if(RenameFileCheck(UserInCom))
                     RenameFileOnLocalMachine(UserInCom);
                 break;
