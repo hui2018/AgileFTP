@@ -85,6 +85,8 @@ public class Shell {
                 break;
             case "putmulti":
                 //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
+                if(CheckSingleGetPutCommand(UserInCom))
+                    PutMultipleFiles(UserInCom);
                 break;
             case "get":
                 //check there is only one file on command line by limit the command argument then run the function
@@ -223,25 +225,60 @@ public class Shell {
         }
     }
 
+    // Put a single file onto remote server
     private void PutFile(String[] filePath) {
-        //String fileName = filePath[1];
-        //boolean result = false;
+
+        // Initialize variable
         File fileTest = new File(filePath[1]);
 
+        // Check if the file exists on local drive
         if (fileTest.exists()) {
+            // If the file exists, store it onto the server
             try {
+                // Enter passive mode to allow uploading to server?
                 ftp.enterLocalPassiveMode();
 
-                FileInputStream fis = new FileInputStream(fileTest);
+                // Store the file on server
+                FileInputStream fis = new FileInputStream(filePath[1]);
                 ftp.storeFile(filePath[1], fis);
                 fis.close();
 
-            } catch (IOException e) {
+            } catch (IOException e) { // Print Stack Trace if failed
                 e.printStackTrace();
             }
         }
+        // If the file does not exist, notify user that file does not exist
         else{
             System.out.println("File Does Not Exist.");
+        }
+    }
+
+    // Put Multiple Files onto remote server
+    private void PutMultipleFiles(String[] filePath){
+
+        // Iterate through each file to check if they exist
+        for(int i = 1; i < filePath.length; i++) {
+            // Create array of files
+            File [] fileTest = new File[i];
+            fileTest[i] = new File(filePath[i]);
+
+
+            // Check each file to see if it exists on drive
+            if(fileTest[i].exists()) {
+                try {
+                    //Store the current file on server
+                    FileInputStream fis = new FileInputStream(filePath[i]);
+                    ftp.storeFile(filePath[1], fis);
+                    fis.close();
+
+                } catch (IOException e) { // Print Stack Trace if failed
+                    e.printStackTrace();
+                }
+            }
+            // If the specific file does not exist, notify user
+            else{
+                System.out.println("File Number: " + i + " Does Not Exist");
+            }
         }
     }
 
