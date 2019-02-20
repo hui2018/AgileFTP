@@ -38,8 +38,11 @@ public class Shell {
     private int TimeOut;
     private Scanner sc;
     private FTPClient ftp;
+    private LogHistory logger;
 
-    public Shell() {}
+    Shell() {
+        logger = new LogHistory();
+    }
 
     public Shell(Scanner sc){
         this.sc = sc;
@@ -62,6 +65,8 @@ public class Shell {
 
         String UserIn = TOInput();
         String [] UserInCom = UserIn.trim().split("\\s*>\\s*");
+
+        logger.AddLog("test");
 
         //shell switch
         switch (UserInCom[0]) {
@@ -114,6 +119,8 @@ public class Shell {
             case "--to":
                 TOShift(UserInCom);
                 break;
+            case "log":
+                logger.DisplayLog();
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
                 System.out.println("Type 'q' or 'logout' to logout.");
@@ -163,7 +170,7 @@ public class Shell {
             }
             else
             {
-                System.out.println("Login successfull.\nYou are now connected.");
+                System.out.println("Login successful.\nYou are now connected.");
             }
         }
         catch (IOException ex) {
@@ -189,6 +196,7 @@ public class Shell {
 
     //---------------DO NOT PLACE COMMAND FUNCTIONS BELOW THIS POINT----------------//
     //-----------------------INNER SHELL FUNCTIONALITY ONLY-------------------------//
+
     //Timeout Function
     private String TOInput()
     {
@@ -381,6 +389,7 @@ public class Shell {
                 "logout\n\tLogs out of the currently connected server.\n" +
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
+                "log\n\tDisplays recent commands" +
                 "");
     }
 }
