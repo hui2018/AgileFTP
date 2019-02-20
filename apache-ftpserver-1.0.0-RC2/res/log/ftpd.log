@@ -1,0 +1,43 @@
+[ INFO] 2019-02-19 16:01:02,028 [] [] Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@8e24743: display name [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]; startup date [Tue Feb 19 16:01:02 PST 2019]; root of context hierarchy
+[ INFO] 2019-02-19 16:01:02,101 [] [] Loading XML bean definitions from file [/Users/Jack/Documents/AgileFTP/apache-ftpserver-1.0.0-RC2/res/conf/ftpd-typical.xml]
+[ INFO] 2019-02-19 16:01:02,561 [] [] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]: org.springframework.beans.factory.support.DefaultListableBeanFactory@bccb269
+[ INFO] 2019-02-19 16:01:02,578 [] [] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@bccb269: defining beans [org.apache.ftpserver.listener.ListenerFactory#0,org.apache.ftpserver.usermanager.PropertiesUserManagerFactory#0,org.apache.ftpserver.FtpServerFactory#0,myServer]; root of factory hierarchy
+[ INFO] 2019-02-19 16:01:02,796 [] [] FTP server started
+[ WARN] 2019-02-19 16:04:51,058 [] [127.0.0.1] CREATED
+[ WARN] 2019-02-19 16:04:51,076 [] [127.0.0.1] OPENED
+[ WARN] 2019-02-19 16:04:51,094 [] [127.0.0.1] SENT: 220 Service ready for new user.
+
+[ INFO] 2019-02-19 16:04:51,097 [] [127.0.0.1] RECEIVED: USER 1
+[ WARN] 2019-02-19 16:04:51,099 [1] [127.0.0.1] SENT: 331 User name okay, need password for 1.
+
+[ INFO] 2019-02-19 16:04:51,100 [1] [127.0.0.1] RECEIVED: PASS *****
+[ WARN] 2019-02-19 16:04:51,102 [1] [127.0.0.1] User failed to log in
+[ WARN] 2019-02-19 16:04:51,604 [1] [127.0.0.1] Login failure - 1
+[ WARN] 2019-02-19 16:04:51,606 [1] [127.0.0.1] SENT: 530 Authentication failed.
+
+[ INFO] 2019-02-19 16:04:51,607 [1] [127.0.0.1] RECEIVED: QUIT
+[ WARN] 2019-02-19 16:04:51,615 [1] [127.0.0.1] SENT: 221 Goodbye.
+
+[ WARN] 2019-02-19 16:04:51,615 [1] [127.0.0.1] CLOSED
+[ WARN] 2019-02-19 16:05:08,336 [] [127.0.0.1] CREATED
+[ WARN] 2019-02-19 16:05:08,338 [1] [127.0.0.1] OPENED
+[ INFO] 2019-02-19 16:05:08,342 [1] [127.0.0.1] RECEIVED: USER ADMIN
+[ WARN] 2019-02-19 16:05:08,346 [admin] [127.0.0.1] SENT: 220 Service ready for new user.
+
+[ WARN] 2019-02-19 16:05:08,346 [admin] [127.0.0.1] SENT: 331 User name okay, need password for admin.
+
+[ INFO] 2019-02-19 16:05:08,347 [admin] [127.0.0.1] RECEIVED: PASS *****
+[ INFO] 2019-02-19 16:05:08,356 [admin] [127.0.0.1] Login success - admin
+[ WARN] 2019-02-19 16:05:08,356 [admin] [127.0.0.1] SENT: 230 User logged in, proceed.
+
+[ WARN] 2019-02-19 16:05:20,744 [admin] [127.0.0.1] CLOSED
+[ INFO] 2019-02-19 16:05:36,055 [] [] Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@8e24743: display name [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]; startup date [Tue Feb 19 16:05:36 PST 2019]; root of context hierarchy
+[ INFO] 2019-02-19 16:05:36,115 [] [] Loading XML bean definitions from file [/Users/Jack/Documents/AgileFTP/apache-ftpserver-1.0.0-RC2/res/conf/ftpd-typical.xml]
+[ INFO] 2019-02-19 16:05:36,411 [] [] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]: org.springframework.beans.factory.support.DefaultListableBeanFactory@13b6aecc
+[ INFO] 2019-02-19 16:05:36,427 [] [] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@13b6aecc: defining beans [org.apache.ftpserver.listener.ListenerFactory#0,org.apache.ftpserver.usermanager.PropertiesUserManagerFactory#0,org.apache.ftpserver.FtpServerFactory#0,myServer]; root of factory hierarchy
+[ INFO] 2019-02-19 16:05:36,609 [] [] FTP server started
+[ INFO] 2019-02-19 16:05:44,949 [] [] Refreshing org.springframework.context.support.FileSystemXmlApplicationContext@8e24743: display name [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]; startup date [Tue Feb 19 16:05:44 PST 2019]; root of context hierarchy
+[ INFO] 2019-02-19 16:05:45,026 [] [] Loading XML bean definitions from file [/Users/Jack/Documents/AgileFTP/apache-ftpserver-1.0.0-RC2/res/conf/ftpd-typical.xml]
+[ INFO] 2019-02-19 16:05:45,388 [] [] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext@8e24743]: org.springframework.beans.factory.support.DefaultListableBeanFactory@bccb269
+[ INFO] 2019-02-19 16:05:45,402 [] [] Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@bccb269: defining beans [org.apache.ftpserver.listener.ListenerFactory#0,org.apache.ftpserver.usermanager.PropertiesUserManagerFactory#0,org.apache.ftpserver.FtpServerFactory#0,myServer]; root of factory hierarchy
+[ INFO] 2019-02-19 16:05:45,603 [] [] FTP server started
