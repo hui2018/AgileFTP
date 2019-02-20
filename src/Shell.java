@@ -80,12 +80,12 @@ public class Shell {
                 break;
             case "put":
                 //put file to remote server example: put c:\filelocation\testing.txt
-                if(CheckSingleGetPutCommand(UserInCom))
+                if(CheckCommands(UserInCom))
                     PutFile(UserInCom);
                 break;
             case "putmulti":
                 //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
-                if(CheckSingleGetPutCommand(UserInCom))
+                if(CheckMultipleGetPutCommand(UserInCom))
                     PutMultipleFiles(UserInCom);
                 break;
             case "get":
