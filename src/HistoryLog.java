@@ -1,12 +1,13 @@
 import java.io.IOException;
 import java.util.*;
 
+
 public class HistoryLog {
     private Stack<String> Log;
 
     HistoryLog()
     {
-        Log = new Stack();
+        //Log = new Stack();
     }
 
     public void AddLog(String command)
@@ -29,5 +30,10 @@ public class HistoryLog {
         {
             System.out.println("\t" + i);
         }
+    }
+
+    public void test()
+    {
+        System.out.println("test");
     }
 }

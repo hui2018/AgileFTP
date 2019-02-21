@@ -21,6 +21,7 @@ Changelog (insert new changes at top)
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.Stack;
 import java.io.InputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -38,6 +39,7 @@ public class Shell {
     private int TimeOut;
     private Scanner sc;
     private FTPClient ftp;
+    private Stack<String> Log;
 
     public Shell() {}
 
@@ -45,6 +47,7 @@ public class Shell {
         this.sc = sc;
         this.TimeOut = 30*1000;
         ftp = new FTPClient();
+        Log = new Stack<>();
     }
 
     public Shell(Scanner sc, int TimeOut) {
@@ -57,6 +60,8 @@ public class Shell {
     //User input gathering loop
     //-------------------------------
     public boolean UserInput () {
+
+        Log.push("test");
         System.out.print("shell->");
         boolean rv = true;
 
@@ -369,6 +374,16 @@ public class Shell {
                 System.out.println(oldName + " was not successfully renamed to: " + newName);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void DisplayLog()
+    {
+        Object[] history = Log.toArray();
+        System.out.println("\nHistory:");
+        for(Object i : history)
+        {
+            System.out.println("\t" + i);
         }
     }
 
