@@ -128,6 +128,9 @@ public class Shell {
             case "log":
                 Log.DisplayLog();
                 break;
+            case "perm":
+                ChangePermission(UserInCom);
+                break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
                 System.out.println("Type 'q' or 'logout' to logout.");
@@ -396,6 +399,45 @@ public class Shell {
             System.out.println(oldName + " was successfully renamed to: " + newName);
         else
             System.out.println(oldName + " was not successfully renamed to: " + newName);
+    }
+
+    //change file permission
+    private void ChangePermission(String [] filePath)
+    {
+        FTPFile[] ftpFiles;
+        boolean checker = true;
+        try {
+            ftpFiles = ftp.listFiles();
+            for (FTPFile file : ftpFiles) {
+                if(file.getName().contentEquals(filePath[1]))
+                {
+                    File files = new File(filePath[1]);
+                    if(filePath[2].contentEquals("true"))
+                    {
+                        files.setReadable(true);
+                        files.setWritable(true);
+                        files.setExecutable(true);
+                        System.out.println("Is file executable: "+ files.canExecute());
+                        System.out.println("Is file writable : "+ files.canWrite());
+                        System.out.println("Is file readable : " + files.canRead());
+                    }
+                    else if(filePath[2].contentEquals("false"))
+                    {
+                        files.setReadable(false);
+                        files.setWritable(false);
+                        files.setExecutable(false);
+                        System.out.println("Is file executable: "+ files.canExecute());
+                        System.out.println("Is file writable : "+ files.canWrite());
+                        System.out.println("Is file readable : " + files.canRead());
+                    }
+                    checker = false;
+                }
+            }
+            if(checker)
+                System.out.println("File does not exist on server");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Help function
