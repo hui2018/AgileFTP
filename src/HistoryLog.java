@@ -7,7 +7,7 @@ public class HistoryLog {
 
     HistoryLog()
     {
-        //Log = new Stack();
+        Log = new Stack<String>();
     }
 
     public void AddLog(String command)
@@ -25,7 +25,7 @@ public class HistoryLog {
     public void DisplayLog()
     {
         Object[] history = Log.toArray();
-        System.out.println("\nHistory:");
+        System.out.println("Log:");
         for(Object i : history)
         {
             System.out.println("\t" + i);

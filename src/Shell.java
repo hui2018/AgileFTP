@@ -39,15 +39,16 @@ public class Shell {
     private int TimeOut;
     private Scanner sc;
     private FTPClient ftp;
-    private Stack<String> Log;
+    public HistoryLog Log;
 
-    public Shell() {}
+    public Shell()
+    {
+    }
 
     public Shell(Scanner sc){
         this.sc = sc;
         this.TimeOut = 30*1000;
         ftp = new FTPClient();
-        Log = new Stack<>();
     }
 
     public Shell(Scanner sc, int TimeOut) {
@@ -55,17 +56,16 @@ public class Shell {
         this.TimeOut = TimeOut * 1000;
         ftp = new FTPClient();
         LogIn(null);
+        Log = new HistoryLog();
     }
 
     //User input gathering loop
     //-------------------------------
     public boolean UserInput () {
-
-        Log.push("test");
         System.out.print("shell->");
         boolean rv = true;
-
         String UserIn = TOInput();
+        Log.AddLog(UserIn);
         String [] UserInCom = UserIn.trim().split("\\s*>\\s*");
 
         //shell switch
@@ -105,6 +105,9 @@ public class Shell {
             case "local":
                 if(CheckCommands(UserInCom))
                     ListLocalDirectoriesAndFiles(UserInCom);
+                break;
+            case "log":
+                Log.DisplayLog();
                 break;
             case "rename":
                 if(RenameFileCheck(UserInCom))
@@ -377,16 +380,6 @@ public class Shell {
         }
     }
 
-    public void DisplayLog()
-    {
-        Object[] history = Log.toArray();
-        System.out.println("\nHistory:");
-        for(Object i : history)
-        {
-            System.out.println("\t" + i);
-        }
-    }
-
     //Help function
     //LEAVE THIS AT THE BOTTOM FOR READABILITY
     private void help ()
@@ -396,6 +389,7 @@ public class Shell {
                 "logout\n\tLogs out of the currently connected server.\n" +
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
+                "log\n\tDisplay recent commands" +
                 "");
     }
 }
