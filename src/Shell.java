@@ -38,6 +38,7 @@ public class Shell {
     private int TimeOut;
     private Scanner sc;
     private FTPClient ftp;
+    public HistoryLog Log;
 
     public Shell() {}
 
@@ -52,6 +53,7 @@ public class Shell {
         this.TimeOut = TimeOut * 1000;
         ftp = new FTPClient();
         LogIn(null);
+        Log = new HistoryLog();
     }
 
     //User input gathering loop
@@ -61,6 +63,7 @@ public class Shell {
         boolean rv = true;
 
         String UserIn = TOInput();
+        Log.AddLog(UserIn);
         String [] UserInCom = UserIn.trim().split("\\s*>\\s*");
 
         //shell switch
@@ -121,6 +124,9 @@ public class Shell {
                 break;
             case "--to":
                 TOShift(UserInCom);
+                break;
+            case "log":
+                Log.DisplayLog();
                 break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
