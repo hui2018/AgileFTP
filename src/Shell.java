@@ -407,6 +407,7 @@ public class Shell {
                 "logout\n\tLogs out of the currently connected server.\n" +
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
+                "log\n\tDisplay recent commands" +
                 "");
     }
 }
