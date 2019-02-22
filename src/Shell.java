@@ -243,12 +243,19 @@ public class Shell {
             // If the file exists, store it onto the server
             try {
                 // Enter passive mode to allow uploading to server?
-                ftp.enterLocalPassiveMode();
+                //ftp.enterLocalPassiveMode();
 
                 // Store the file on server
-                FileInputStream fis = new FileInputStream(filePath[1]);
-                ftp.storeFile(filePath[1], fis);
-                fis.close();
+                //FileInputStream fis = new FileInputStream(filePath[1]);
+                //ftp.storeFile(filePath[1], fis);
+                //fis.close();
+
+                InputStream in = new FileInputStream(filePath[1]);
+                ftp.enterLocalPassiveMode();
+                ftp.setFileType(ftp.BINARY_FILE_TYPE,ftp.BINARY_FILE_TYPE);
+                ftp.setFileTransferMode(ftp.BINARY_FILE_TYPE);
+                ftp.storeFile("test.txt", in);
+                in.close();
 
             } catch (IOException e) { // Print Stack Trace if failed
                 e.printStackTrace();
