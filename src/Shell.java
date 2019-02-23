@@ -250,12 +250,15 @@ public class Shell {
                 //ftp.storeFile(filePath[1], fis);
                 //fis.close();
 
-                InputStream in = new FileInputStream(filePath[1]);
                 ftp.enterLocalPassiveMode();
+
+                InputStream is = new FileInputStream(fileTest);
+
                 ftp.setFileType(ftp.BINARY_FILE_TYPE,ftp.BINARY_FILE_TYPE);
                 ftp.setFileTransferMode(ftp.BINARY_FILE_TYPE);
-                ftp.storeFile("test.txt", in);
-                in.close();
+                ftp.storeFile(filePath[1], is);
+
+                is.close();
 
             } catch (IOException e) { // Print Stack Trace if failed
                 e.printStackTrace();
