@@ -133,6 +133,15 @@ public class Shell {
             case "log":
                 Log.DisplayLog();
                 break;
+            case "mkdir":
+            	createDirectory(ftp);
+            	break;
+            case "rmdir":
+            	removeDirectory(ftp);
+            	break;
+            case "cd":
+            	changeDirectory(ftp);
+            	break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
                 System.out.println("Type 'q' or 'logout' to logout.");
@@ -438,6 +447,101 @@ public class Shell {
             }
         }
     }
+    
+  //Check server respond to command
+    private static void checkServerReply(FTPClient client) 
+    {
+    	
+    	String[] serverReplies = client.getReplyStrings();
+        if (serverReplies != null && serverReplies.length > 0) {
+        	for (String printReplies : serverReplies) {
+        		System.out.println(printReplies);
+            }
+         }
+    }
+    
+    //Create Directory
+    public void createDirectory(FTPClient client){
+    	boolean create = false;
+    	String newDirName;
+    	Scanner input = new Scanner(System.in);
+    	
+    	try {
+    		System.out.println("Enter the directory name to create: ");
+    		newDirName = input.nextLine();
+    			
+    	    create = client.makeDirectory(newDirName);
+    	    
+    	    if(create) {
+    	    	System.out.println("\"/" + newDirName + "\" Directory created.");
+    	    }
+    	    else {
+    	    	System.out.println("Failed! See server message below.");
+    	    	checkServerReply(client);
+    	    }
+    	    
+    		}catch(IOException error) {
+    			System.out.println("IO operation failed!");
+    			error.printStackTrace();
+    		}
+            
+    }
+    
+    //Remove Directory
+    public void removeDirectory(FTPClient client){
+    	boolean remove = false;
+    	Scanner input = new Scanner(System.in);
+    	
+    	try {
+    		System.out.println("Enter the directory name to remove: ");
+    		String newDirName = input.nextLine();
+    			
+    	    remove = client.removeDirectory(newDirName);
+    	    
+    	    if(remove) {
+    	    	System.out.println("\"/" + newDirName + "\" Directory removed!.");
+    	    }
+    	    else {
+    	    	System.out.println("Failed! See server message below.");
+    	    	checkServerReply(client);
+    	    }
+    	    
+    		}catch(IOException error) {
+    			
+    			System.out.println("IO operation failed!");
+    			error.printStackTrace();
+    		}
+            
+    }
+    
+    //Change Directory
+    public void changeDirectory(FTPClient client){
+    	
+    	boolean change = false;
+    	Scanner input = new Scanner(System.in);
+    	
+    	try {
+    
+    		System.out.println("Enter a directory name to change: ");
+    		String newDirName = input.nextLine();
+    			
+    	    change = client.changeWorkingDirectory(newDirName);
+    	    
+    	    if(change) {
+    	    	System.out.println("\"/" + newDirName + "\" is the current directory.");
+    	    }
+    	    else {
+    	    	System.out.println("Failed! See server message below.\n");
+    	    	checkServerReply(client);
+    	    }
+    	    
+    		}catch(IOException error) {
+    			
+    			System.out.println("IO operation failed!");
+    			error.printStackTrace();
+    		}
+            
+    	}
 
     //Help function
     //LEAVE THIS AT THE BOTTOM FOR READABILITY
