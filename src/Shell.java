@@ -116,6 +116,11 @@ public class Shell {
                 if(RenameFileCheck(UserInCom))
                     RenameFileOnLocalMachine(UserInCom);
                 break;
+            case "cpydir":
+                //to test enter cpydir>"directory path"
+                if(CheckCommands(UserInCom))
+                    CopyDirectoryFromServer(UserInCom);
+                break;
             case "help":
                 help();
                 break;
@@ -396,6 +401,42 @@ public class Shell {
             System.out.println(oldName + " was successfully renamed to: " + newName);
         else
             System.out.println(oldName + " was not successfully renamed to: " + newName);
+    }
+
+    //copy all files from a input directory
+    private void CopyDirectoryFromServer(String [] input)
+    {
+        if(input[1].contains("."))
+        {
+            System.out.println("Please enter a correct directory path");
+            return;
+        }
+        FTPFile[] ftpFiles;
+        {
+            try {
+                ftpFiles = ftp.listFiles(input[1]);
+                if (ftpFiles != null && ftpFiles.length > 0) {
+                    //loop thru files
+                    for (FTPFile file : ftpFiles) {
+                        if (file.isFile()) {
+                            File files = new File(file.getName());
+                            ftp.enterLocalPassiveMode();
+                            FileOutputStream dfile = new FileOutputStream(files);
+                            ftp.retrieveFile(file.getName(),dfile);
+                            dfile.close();
+                            System.out.println("File " + file.getName() +" is downloaded");
+                        }
+                    }
+                }
+                else
+                {
+                    System.out.println("Please enter a correct directory path");
+                }
+            } catch (IOException e) {
+                System.out.println("Directory does not exist");
+                //e.printStackTrace();
+            }
+        }
     }
 
     //Help function
