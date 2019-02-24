@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.ftp.FTPFile;
 
 public class Shell {
@@ -41,9 +42,7 @@ public class Shell {
     private FTPClient ftp;
     public HistoryLog Log;
 
-    public Shell()
-    {
-    }
+    public Shell() { }
 
     public Shell(Scanner sc){
         this.sc = sc;
@@ -113,6 +112,9 @@ public class Shell {
                 if(RenameFileCheck(UserInCom))
                     RenameFileOnServer(UserInCom);
                 break;
+            case "delFile":
+                DeleteFileFromServer(UserInCom);
+                break;
             case "help":
                 help();
                 break;
@@ -131,6 +133,29 @@ public class Shell {
 
     //Functions called by shell input
     //-------------------------------
+    private void DeleteFileFromServer(String[] pathname)
+    {
+        boolean del = false;
+        try
+        {
+            for(int i = 1; i < pathname.length; i++)
+            {
+                System.out.println(pathname[i]);
+                if(ftp.deleteFile(pathname[i]) == true)
+                    System.out.println("Delete Good");
+                else
+                    System.out.println("Delete Bad");
+            }
+        }
+        catch (FTPConnectionClosedException e)
+        {
+            System.err.println("Unable to connect to server: " + e);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error Delete: " + e);
+        }
+    }
 
     //sum function used for testing purposes
     private int sum (String[] inputs)
@@ -389,6 +414,7 @@ public class Shell {
                 "logout\n\tLogs out of the currently connected server.\n" +
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
+                "delFile>(server_filepath)\n\tDeletes the specified file from the connected server.\n" +
                 "log\n\tDisplay recent commands" +
                 "");
     }
