@@ -250,6 +250,7 @@ public class Shell {
                 //ftp.storeFile(filePath[1], fis);
                 //fis.close();
 
+
                 ftp.enterLocalPassiveMode();
 
                 InputStream is = new FileInputStream(fileTest);
@@ -285,7 +286,7 @@ public class Shell {
                 try {
                     //Store the current file on server
                     FileInputStream fis = new FileInputStream(filePath[i]);
-                    ftp.storeFile(filePath[1], fis);
+                    ftp.storeFile(filePath[i], fis);
                     fis.close();
 
                 } catch (IOException e) { // Print Stack Trace if failed
