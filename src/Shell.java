@@ -38,6 +38,7 @@ public class Shell {
     private int TimeOut;
     private Scanner sc;
     private FTPClient ftp;
+    public HistoryLog Log;
 
     public Shell() {}
 
@@ -52,6 +53,7 @@ public class Shell {
         this.TimeOut = TimeOut * 1000;
         ftp = new FTPClient();
         LogIn(null);
+        Log = new HistoryLog();
     }
 
     //User input gathering loop
@@ -61,6 +63,7 @@ public class Shell {
         boolean rv = true;
 
         String UserIn = TOInput();
+        Log.AddLog(UserIn);
         String [] UserInCom = UserIn.trim().split("\\s*>\\s*");
 
         //shell switch
@@ -89,25 +92,38 @@ public class Shell {
                     PutMultipleFiles(UserInCom);
                 break;
             case "get":
-                //check there is only one file on command line by limit the command argument then run the function
+                //to test enter get>"path of file on server"
                 if(CheckCommands(UserInCom))
                     GetFile(UserInCom);
                 break;
             case "getmulti":
-                //pass in multiple files
+                //to test enter get>"path of file on server">"path of file on server">
                 if(CheckMultipleGetPutCommand(UserInCom))
                     GetMultipleFiles(UserInCom);
                 break;
             case "ls":
+                //to test just enter ls
                 ListDirectoriesAndFiles(UserInCom);
                 break;
             case "local":
+                //to test enter local>"path on local machine"
                 if(CheckCommands(UserInCom))
                     ListLocalDirectoriesAndFiles(UserInCom);
                 break;
             case "rename":
+                //to test enter rename>"file name on server">"new file name"
                 if(RenameFileCheck(UserInCom))
                     RenameFileOnServer(UserInCom);
+                break;
+            case "renamelocal":
+                //to test enter renamelocal>"file path on local machine">"new file name on local machine"
+                if(RenameFileCheck(UserInCom))
+                    RenameFileOnLocalMachine(UserInCom);
+                break;
+            case "cpydir":
+                //to test enter cpydir>"directory path"
+                if(CheckCommands(UserInCom))
+                    CopyDirectoryFromServer(UserInCom);
                 break;
             case "help":
                 help();
@@ -117,6 +133,9 @@ public class Shell {
                 break;
             case "--to":
                 TOShift(UserInCom);
+                break;
+            case "log":
+                Log.DisplayLog();
                 break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
@@ -444,6 +463,54 @@ public class Shell {
         }
     }
 
+    //rename a file name on local machine
+    private void RenameFileOnLocalMachine(String [] input)
+    {
+        File oldName = new File(input[1]);
+        File newName = new File(input[2]);
+        boolean check = oldName.renameTo(newName);
+        if(check)
+            System.out.println(oldName + " was successfully renamed to: " + newName);
+        else
+            System.out.println(oldName + " was not successfully renamed to: " + newName);
+    }
+
+    //copy all files from a input directory
+    private void CopyDirectoryFromServer(String [] input)
+    {
+        if(input[1].contains("."))
+        {
+            System.out.println("Please enter a correct directory path");
+            return;
+        }
+        FTPFile[] ftpFiles;
+        {
+            try {
+                ftpFiles = ftp.listFiles(input[1]);
+                if (ftpFiles != null && ftpFiles.length > 0) {
+                    //loop thru files
+                    for (FTPFile file : ftpFiles) {
+                        if (file.isFile()) {
+                            File files = new File(file.getName());
+                            ftp.enterLocalPassiveMode();
+                            FileOutputStream dfile = new FileOutputStream(files);
+                            ftp.retrieveFile(file.getName(),dfile);
+                            dfile.close();
+                            System.out.println("File " + file.getName() +" is downloaded");
+                        }
+                    }
+                }
+                else
+                {
+                    System.out.println("Please enter a correct directory path");
+                }
+            } catch (IOException e) {
+                System.out.println("Directory does not exist");
+                //e.printStackTrace();
+            }
+        }
+    }
+
     //Help function
     //LEAVE THIS AT THE BOTTOM FOR READABILITY
     private void help ()
@@ -453,6 +520,7 @@ public class Shell {
                 "logout\n\tLogs out of the currently connected server.\n" +
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
+                "log\n\tDisplay recent commands" +
                 "");
     }
 }
