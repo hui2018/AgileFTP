@@ -311,18 +311,32 @@ public class Shell {
         // Iterate through each file to check if they exist
         for(int i = 1; i < filePath.length; i++) {
             // Create array of files
-            File [] fileTest = new File[i];
-            fileTest[i] = new File(filePath[i]);
+            File [] localFile = new File[filePath.length-1];
+            localFile[i-1] = new File(filePath[i]);
 
 
             // Check each file to see if it exists on drive
-            if(fileTest[i].exists()) {
+            if(localFile[i-1].exists()) {
+                String remoteFile = "\\" + localFile[i-1].getName();
                 try {
                     //Store the current file on server
-                    FileInputStream fis = new FileInputStream(filePath[i]);
-                    ftp.storeFile(filePath[i], fis);
-                    fis.close();
+                    //Method 2 using Outputstream
+                    InputStream inputStream = new FileInputStream(localFile[i-1]);
+                    OutputStream outputStream = ftp.storeFileStream(remoteFile);
 
+                    byte [] buffer = new byte[4096];
+                    int read = 0;
+                    while ((read = inputStream.read(buffer)) != -1){
+                        outputStream.write(buffer,0,read);
+                        }
+
+                    inputStream.close();
+                    outputStream.close();
+
+                    boolean completed = ftp.completePendingCommand();
+                    if(completed) {
+                        System.out.println("File " + i + " successfully uploaded.");
+                    }
                 } catch (IOException e) { // Print Stack Trace if failed
                     e.printStackTrace();
                 }
