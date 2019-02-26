@@ -255,30 +255,45 @@ public class Shell {
     private void PutFile(String[] filePath) {
 
         // Initialize variable
-        File fileTest = new File(filePath[1]);
+        File localFile = new File(filePath[1]);
 
         // Check if the file exists on local drive
-        if (fileTest.exists()) {
+        if (localFile.exists()) {
+            String remoteFile = "\\" + localFile.getName();
+
             // If the file exists, store it onto the server
             try {
-                // Enter passive mode to allow uploading to server?
-                //ftp.enterLocalPassiveMode();
-
-                // Store the file on server
-                //FileInputStream fis = new FileInputStream(filePath[1]);
-                //ftp.storeFile(filePath[1], fis);
-                //fis.close();
-
+                /*
+                //Method 1 using InputStream
+                String remoteSave = localFile.getName();
 
                 ftp.enterLocalPassiveMode();
+                InputStream inputStream = new FileInputStream(localFile);
 
-                InputStream is = new FileInputStream(fileTest);
+                boolean done = ftp.storeFile(remoteSave, inputStream);
+                inputStream.close();
 
-                ftp.setFileType(ftp.BINARY_FILE_TYPE,ftp.BINARY_FILE_TYPE);
-                ftp.setFileTransferMode(ftp.BINARY_FILE_TYPE);
-                ftp.storeFile(filePath[1], is);
+                if (done){
+                    System.out.println("File successfully uploaded.");
+                }
+                */
 
-                is.close();
+                //Method 2 using Outputstream
+                InputStream inputStream = new FileInputStream(localFile);
+                OutputStream outputStream = ftp.storeFileStream(remoteFile);
+                byte [] bytesIn = new byte[4096];
+                int read = 0;
+                while ((read = inputStream.read(bytesIn)) != -1){
+                    outputStream.write(bytesIn,0,read);
+                }
+
+                inputStream.close();
+                outputStream.close();
+
+                boolean completed = ftp.completePendingCommand();
+                if(completed) {
+                    System.out.println("File successfully uploaded.");
+                }
 
             } catch (IOException e) { // Print Stack Trace if failed
                 e.printStackTrace();
