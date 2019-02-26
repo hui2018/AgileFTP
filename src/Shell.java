@@ -279,17 +279,22 @@ public class Shell {
                 */
 
                 //Method 2 using Outputstream
+                // Create input and output streams to upload and store file remotely
                 InputStream inputStream = new FileInputStream(localFile);
                 OutputStream outputStream = ftp.storeFileStream(remoteFile);
+
+                // Create buffer to transfer file
                 byte [] bytesIn = new byte[4096];
                 int read = 0;
                 while ((read = inputStream.read(bytesIn)) != -1){
                     outputStream.write(bytesIn,0,read);
                 }
 
+                // Close input and output streams
                 inputStream.close();
                 outputStream.close();
 
+                // Check to see if action is complete
                 boolean completed = ftp.completePendingCommand();
                 if(completed) {
                     System.out.println("File successfully uploaded.");
@@ -320,19 +325,22 @@ public class Shell {
                 String remoteFile = "\\" + localFile[i-1].getName();
                 try {
                     //Store the current file on server
-                    //Method 2 using Outputstream
                     InputStream inputStream = new FileInputStream(localFile[i-1]);
                     OutputStream outputStream = ftp.storeFileStream(remoteFile);
 
-                    byte [] buffer = new byte[4096];
+                    // Create buffer to read in each file
                     int read = 0;
+                    byte [] buffer = new byte[4096];
+
                     while ((read = inputStream.read(buffer)) != -1){
                         outputStream.write(buffer,0,read);
                         }
 
+                    // Close the input and output streams
                     inputStream.close();
                     outputStream.close();
 
+                    // Check to make sure each upload finishes
                     boolean completed = ftp.completePendingCommand();
                     if(completed) {
                         System.out.println("File " + i + " successfully uploaded.");
