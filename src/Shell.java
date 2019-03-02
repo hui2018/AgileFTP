@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.ftp.FTPFile;
 
 public class Shell {
@@ -137,6 +138,9 @@ public class Shell {
             case "log":
                 Log.DisplayLog();
                 break;
+            case "rm":
+                DeleteFileFromServer(UserInCom);
+                break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
                 System.out.println("Type 'q' or 'logout' to logout.");
@@ -153,7 +157,7 @@ public class Shell {
         int ret = 0;
         for (String s:inputs) {
             try {
-               ret += Integer.parseInt(s);
+                ret += Integer.parseInt(s);
             }
             catch (NumberFormatException e)
             {
@@ -310,6 +314,29 @@ public class Shell {
         }
     }
 
+    private void DeleteFileFromServer(String[] pathname)
+    {
+        boolean del = false;
+        try
+        {
+            for(int i = 1; i < pathname.length; i++)
+            {
+                System.out.println(pathname[i]);
+                if(ftp.deleteFile(pathname[i]) == false)
+                    System.out.println("Unable to delete: " + pathname[i]);
+            }
+        }
+        catch (FTPConnectionClosedException e)
+        {
+            System.err.println("Unable to connect to server: " + e);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error Delete: " + e);
+        }
+    }
+
+
     // Put Multiple Files onto remote server
     private void PutMultipleFiles(String[] filePath){
 
@@ -334,7 +361,7 @@ public class Shell {
 
                     while ((read = inputStream.read(buffer)) != -1){
                         outputStream.write(buffer,0,read);
-                        }
+                    }
 
                     // Close the input and output streams
                     inputStream.close();
@@ -363,20 +390,20 @@ public class Shell {
         boolean checker = true;
         try {
             ftpFiles = ftp.listFiles();
-                for (FTPFile file : ftpFiles) {
-                    if(file.getName().contentEquals(filePath[1]))
-                    {
-                        File files = new File(filePath[1]);
-                        ftp.enterLocalPassiveMode();
-                        FileOutputStream dfile = new FileOutputStream(files);
-                        ftp.retrieveFile(filePath[1],dfile);
-                        dfile.close();
-                        checker = false;
-                        System.out.println("File exist on server");
-                    }
+            for (FTPFile file : ftpFiles) {
+                if(file.getName().contentEquals(filePath[1]))
+                {
+                    File files = new File(filePath[1]);
+                    ftp.enterLocalPassiveMode();
+                    FileOutputStream dfile = new FileOutputStream(files);
+                    ftp.retrieveFile(filePath[1],dfile);
+                    dfile.close();
+                    checker = false;
+                    System.out.println("File exist on server");
                 }
-                if(checker)
-                    System.out.println("File does not exist on server");
+            }
+            if(checker)
+                System.out.println("File does not exist on server");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -557,6 +584,7 @@ public class Shell {
                 "logout\n\tLogs out of the currently connected server.\n" +
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
+                "rm>(server_filepath)\n\tDeletes the specified file from the connected server.\n" +
                 "log\n\tDisplay recent commands" +
                 "");
     }
