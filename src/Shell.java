@@ -321,7 +321,6 @@ public class Shell {
         {
             for(int i = 1; i < pathname.length; i++)
             {
-                System.out.println(pathname[i]);
                 if(ftp.deleteFile(pathname[i]) == false)
                     System.out.println("Unable to delete: " + pathname[i]);
             }
