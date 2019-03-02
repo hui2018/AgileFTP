@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.ftp.FTPFile;
 
 public class Shell {
@@ -84,9 +83,13 @@ public class Shell {
                 break;
             case "put":
                 //put file to remote server example: put c:\filelocation\testing.txt
+                if(CheckCommands(UserInCom))
+                    PutFile(UserInCom);
                 break;
             case "putmulti":
                 //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
+                if(CheckMultipleGetPutCommand(UserInCom))
+                    PutMultipleFiles(UserInCom);
                 break;
             case "get":
                 //to test enter get>"path of file on server"
@@ -121,9 +124,6 @@ public class Shell {
                 //to test enter cpydir>"directory path"
                 if(CheckCommands(UserInCom))
                     CopyDirectoryFromServer(UserInCom);
-                break;
-            case "rm":
-                DeleteFileFromServer(UserInCom);
                 break;
             case "help":
                 help();
@@ -251,6 +251,111 @@ public class Shell {
         }
     }
 
+    // Put a single file onto remote server
+    private void PutFile(String[] filePath) {
+
+        // Initialize variable
+        File localFile = new File(filePath[1]);
+
+        // Check if the file exists on local drive
+        if (localFile.exists()) {
+            String remoteFile = "\\" + localFile.getName();
+
+            // If the file exists, store it onto the server
+            try {
+                /*
+                //Method 1 using InputStream
+                String remoteSave = localFile.getName();
+
+                ftp.enterLocalPassiveMode();
+                InputStream inputStream = new FileInputStream(localFile);
+
+                boolean done = ftp.storeFile(remoteSave, inputStream);
+                inputStream.close();
+
+                if (done){
+                    System.out.println("File successfully uploaded.");
+                }
+                */
+
+                //Method 2 using Outputstream
+                // Create input and output streams to upload and store file remotely
+                InputStream inputStream = new FileInputStream(localFile);
+                OutputStream outputStream = ftp.storeFileStream(remoteFile);
+
+                // Create buffer to transfer file
+                byte [] bytesIn = new byte[4096];
+                int read = 0;
+                while ((read = inputStream.read(bytesIn)) != -1){
+                    outputStream.write(bytesIn,0,read);
+                }
+
+                // Close input and output streams
+                inputStream.close();
+                outputStream.close();
+
+                // Check to see if action is complete
+                boolean completed = ftp.completePendingCommand();
+                if(completed) {
+                    System.out.println("File successfully uploaded.");
+                }
+
+            } catch (IOException e) { // Print Stack Trace if failed
+                e.printStackTrace();
+            }
+        }
+        // If the file does not exist, notify user that file does not exist
+        else{
+            System.out.println("File Does Not Exist.");
+        }
+    }
+
+    // Put Multiple Files onto remote server
+    private void PutMultipleFiles(String[] filePath){
+
+        // Iterate through each file to check if they exist
+        for(int i = 1; i < filePath.length; i++) {
+            // Create array of files
+            File [] localFile = new File[filePath.length-1];
+            localFile[i-1] = new File(filePath[i]);
+
+
+            // Check each file to see if it exists on drive
+            if(localFile[i-1].exists()) {
+                String remoteFile = "\\" + localFile[i-1].getName();
+                try {
+                    //Store the current file on server
+                    InputStream inputStream = new FileInputStream(localFile[i-1]);
+                    OutputStream outputStream = ftp.storeFileStream(remoteFile);
+
+                    // Create buffer to read in each file
+                    int read = 0;
+                    byte [] buffer = new byte[4096];
+
+                    while ((read = inputStream.read(buffer)) != -1){
+                        outputStream.write(buffer,0,read);
+                        }
+
+                    // Close the input and output streams
+                    inputStream.close();
+                    outputStream.close();
+
+                    // Check to make sure each upload finishes
+                    boolean completed = ftp.completePendingCommand();
+                    if(completed) {
+                        System.out.println("File " + i + " successfully uploaded.");
+                    }
+                } catch (IOException e) { // Print Stack Trace if failed
+                    e.printStackTrace();
+                }
+            }
+            // If the specific file does not exist, notify user
+            else{
+                System.out.println("File Number: " + i + " Does Not Exist");
+            }
+        }
+    }
+
     //get file from remote server
     private void GetFile(String[] filePath)
     {
@@ -290,30 +395,6 @@ public class Shell {
             return false;
         }
         return true;
-    }
-
-    private void DeleteFileFromServer(String[] pathname)
-    {
-        boolean del = false;
-        try
-        {
-            for(int i = 1; i < pathname.length; i++)
-            {
-                System.out.println(pathname[i]);
-                if(ftp.deleteFile(pathname[i]) == true)
-                    System.out.println("Delete Good");
-                else
-                    System.out.println("Delete Bad");
-            }
-        }
-        catch (FTPConnectionClosedException e)
-        {
-            System.err.println("Unable to connect to server: " + e);
-        }
-        catch (IOException e)
-        {
-            System.err.println("Error Delete: " + e);
-        }
     }
 
     private void GetMultipleFiles (String[] filePath)
@@ -476,7 +557,6 @@ public class Shell {
                 "logout\n\tLogs out of the currently connected server.\n" +
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
-                "rm>(server_filepath)\n\tDeletes the specified file from the connected server.\n" +
                 "log\n\tDisplay recent commands" +
                 "");
     }
