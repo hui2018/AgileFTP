@@ -138,6 +138,9 @@ public class Shell {
             case "log":
                 Log.DisplayLog();
                 break;
+            case "rmdir":
+                DeleteDirectoryFromServer(UserInCom);
+                break;
             case "rm":
                 DeleteFileFromServer(UserInCom);
                 break;
@@ -311,6 +314,26 @@ public class Shell {
         // If the file does not exist, notify user that file does not exist
         else{
             System.out.println("File Does Not Exist.");
+        }
+    }
+
+    private void DeleteDirectoryFromServer(String[] pathname)
+    {
+        try
+        {
+            for(int i = 1; i < pathname.length; i++)
+            {
+                if(ftp.removeDirectory(pathname[i]) == false)
+                    System.out.println("Unable to delete: " + pathname[i]);
+            }
+        }
+        catch (FTPConnectionClosedException e)
+        {
+            System.err.println("Unable to connect to server: " + e);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error Delete: " + e);
         }
     }
 
@@ -584,6 +607,7 @@ public class Shell {
                 "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
                 "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
                 "rm>(server_filepath)\n\tDeletes the specified file from the connected server.\n" +
+                "rmdir>(server_filepath)\n\tDeletes the specified directory from the connected server.\n" +
                 "log\n\tDisplay recent commands" +
                 "");
     }
