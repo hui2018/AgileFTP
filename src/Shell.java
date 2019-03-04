@@ -586,6 +586,8 @@ public class Shell {
             {
                 if(ftp.deleteFile(pathname[i]) == false)
                     System.out.println("Unable to delete: " + pathname[i]);
+                else
+                    System.out.println(pathname[i] + " file is deleted");
             }
         }
         catch (FTPConnectionClosedException e)
