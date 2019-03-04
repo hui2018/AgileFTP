@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.ftp.FTPFile;
 
 public class Shell {
@@ -136,6 +137,12 @@ public class Shell {
                 break;
             case "log":
                 Log.DisplayLog();
+                break;
+            case "rmdir":
+                DeleteDirectoryFromServer(UserInCom);
+                break;
+            case "rm":
+                DeleteFileFromServer(UserInCom);
                 break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
@@ -545,6 +552,49 @@ public class Shell {
                 System.out.println("Directory does not exist");
                 //e.printStackTrace();
             }
+        }
+    }
+
+    //delete directory from server
+    private void DeleteDirectoryFromServer(String[] pathname)
+    {
+        try
+        {
+            for(int i = 1; i < pathname.length; i++)
+            {
+                if(ftp.removeDirectory(pathname[i]) == false)
+                    System.out.println("Unable to delete: " + pathname[i]);
+            }
+        }
+        catch (FTPConnectionClosedException e)
+        {
+            System.err.println("Unable to connect to server: " + e);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error Delete: " + e);
+        }
+    }
+
+    //delete file from server
+    private void DeleteFileFromServer(String[] pathname)
+    {
+        boolean del = false;
+        try
+        {
+            for(int i = 1; i < pathname.length; i++)
+            {
+                if(ftp.deleteFile(pathname[i]) == false)
+                    System.out.println("Unable to delete: " + pathname[i]);
+            }
+        }
+        catch (FTPConnectionClosedException e)
+        {
+            System.err.println("Unable to connect to server: " + e);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Error Delete: " + e);
         }
     }
 
