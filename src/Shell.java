@@ -144,6 +144,19 @@ public class Shell {
             case "rm":
                 DeleteFileFromServer(UserInCom);
                 break;
+            //Test command: mkdir > "to create directory name"
+            case "mkdir":
+                createDirectory(UserInCom);
+                break;
+            //Test command: cd > "to change directory name"
+            case "cd":
+                changeDirectory(UserInCom);
+                break;
+            //3 digit permission code = 777, 755, 666, etc...
+            //Test command: chmod > "3 digit permission code" > "file or directory name"
+            case "chmod":
+                changePermission(UserInCom);
+                break;
             default:
                 System.out.println("Not a valid function. Type 'help' or 'h' to see functions.");
                 System.out.println("Type 'q' or 'logout' to logout.");
@@ -600,6 +613,82 @@ public class Shell {
         }
     }
 
+    //Check server respond to command
+    private static void checkServerReply(FTPClient client)
+    {
+
+        String[] serverReplies = client.getReplyStrings();
+        if (serverReplies != null && serverReplies.length > 0) {
+            for (String printReplies : serverReplies) {
+                System.out.println(printReplies);
+            }
+        }
+    }
+
+    //Create Directory
+    private void createDirectory(String[] inputs){
+        boolean create = false;
+        try {
+            create = ftp.makeDirectory(inputs[1]);
+            if(create) {
+                System.out.println("\"/" + inputs[1] + "\" Directory created.");
+            }
+            else {
+                System.out.println("Failed! See server message below.");
+                checkServerReply(ftp);
+            }
+        }catch(IOException error) {
+            System.out.println("IO operation failed!");
+            error.printStackTrace();
+        }
+    }
+
+    //Change Directory
+    private void changeDirectory(String[] inputs){
+
+        boolean change = false;
+
+        try {
+
+            change = ftp.changeWorkingDirectory(inputs[1]);
+
+            if(change) {
+                System.out.println("\"/" + inputs[1]+ "\" is the current directory.");
+            }
+            else {
+                System.out.println("Failed! See server message below.");
+                checkServerReply(ftp);
+            }
+
+        }catch(IOException error) {
+
+            System.out.println("IO operation failed!");
+            error.printStackTrace();
+        }
+
+    }
+    
+    //Change Permission
+    private void changePermission(String[] inputs){
+
+        boolean change = false;
+
+        try {
+            change = ftp.sendSiteCommand("chmod " + inputs[1] + " " + inputs[2]);
+
+            if(change) {
+                System.out.println("\"/" + inputs[2] + "\" permission is: " + inputs[1]);
+            }
+            else {
+                System.out.println("Failed! See server message below.");
+                checkServerReply(ftp);
+            }
+
+        }catch(IOException error) {
+            System.out.println("IO operation failed!");
+            error.printStackTrace();
+        }
+    }
     //Help function
     //LEAVE THIS AT THE BOTTOM FOR READABILITY
     private void help ()
