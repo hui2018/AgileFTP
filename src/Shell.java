@@ -40,20 +40,23 @@ public class Shell {
     private Scanner sc;
     private FTPClient ftp;
     public HistoryLog Log;
+    private String[] loginInfo;
 
     public Shell() {}
 
     public Shell(Scanner sc){
         this.sc = sc;
         this.TimeOut = 30*1000;
+        loginInfo = new String[] {};
         ftp = new FTPClient();
     }
 
     public Shell(Scanner sc, int TimeOut) {
         this.sc = sc;
         this.TimeOut = TimeOut * 1000;
+        loginInfo = new String[] {};
         ftp = new FTPClient();
-        LogIn(null);
+        WhichLogIn(null);
         Log = new HistoryLog();
     }
 
@@ -144,6 +147,9 @@ public class Shell {
             case "rm":
                 DeleteFileFromServer(UserInCom);
                 break;
+            case "saveLogin":
+                SaveConnection();
+                break;
             //Test command: mkdir > "to create directory name"
             case "mkdir":
                 createDirectory(UserInCom);
@@ -173,7 +179,7 @@ public class Shell {
         int ret = 0;
         for (String s:inputs) {
             try {
-               ret += Integer.parseInt(s);
+                ret += Integer.parseInt(s);
             }
             catch (NumberFormatException e)
             {
@@ -182,6 +188,7 @@ public class Shell {
         return ret;
     }
 
+    //log in manually
     private void LogIn (String[] inputs)
     {
         try {
@@ -207,11 +214,78 @@ public class Shell {
             else
             {
                 System.out.println("Login successfull.\nYou are now connected.");
+                //keep login info if user wants to save it
+                loginInfo = new String[] {serverAddress,Integer.toString(port),userId,password};
             }
         }
         catch (IOException ex) {
             System.out.println("Unable to connect to server");
             //ex.printStackTrace();
+        }
+    }
+
+    //login from a file
+    private boolean SavedLogIn (String[] inputs)
+    {
+        //only look 1 place for file
+        String path = Shell.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        File conInfo = new File(path + "loginInfo.txt");
+        if (!conInfo.exists())
+        {
+            System.out.println("No saved connection exists.");
+            return false;
+        }
+        try {
+            //connection info
+            String[] con = new String[3];
+            //port value
+            Integer p;
+            FileReader fr = new FileReader(conInfo);
+            BufferedReader br = new BufferedReader(fr);
+            //Fill our info from the file.
+            con[0] = br.readLine();
+            p = Integer.parseInt(br.readLine());
+            con[1] = br.readLine();
+            con[2] = br.readLine();
+
+            //connect
+            ftp.connect(con[0], p);
+
+            //login to server
+            if (!ftp.login(con[1], con[2])) {
+                ftp.logout();
+                ftp.disconnect();
+                System.out.println("Login Error");
+            }
+            else
+            {
+                System.out.println("Login successfull.\nYou are now connected.");
+            }
+        } catch (IOException e) {
+            System.out.println("Connection in file is not valid");
+            return false;
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("Saved port is not valid");
+            return false;
+        }
+        return true;
+    }
+
+    //on launch, choose which login to use: from file, or from user
+    private void WhichLogIn (String[] inputs)
+    {
+        boolean doMe = false;
+        System.out.print("Login using saved login info? (y/n) ");
+        String ans = sc.next();
+        if (ans.equals("y"))
+        {
+            doMe = SavedLogIn(inputs);
+        }
+        if (!doMe)
+        {
+            LogIn(inputs);
         }
     }
 
@@ -354,7 +428,7 @@ public class Shell {
 
                     while ((read = inputStream.read(buffer)) != -1){
                         outputStream.write(buffer,0,read);
-                        }
+                    }
 
                     // Close the input and output streams
                     inputStream.close();
@@ -383,20 +457,20 @@ public class Shell {
         boolean checker = true;
         try {
             ftpFiles = ftp.listFiles();
-                for (FTPFile file : ftpFiles) {
-                    if(file.getName().contentEquals(filePath[1]))
-                    {
-                        File files = new File(filePath[1]);
-                        ftp.enterLocalPassiveMode();
-                        FileOutputStream dfile = new FileOutputStream(files);
-                        ftp.retrieveFile(filePath[1],dfile);
-                        dfile.close();
-                        checker = false;
-                        System.out.println("File exist on server");
-                    }
+            for (FTPFile file : ftpFiles) {
+                if(file.getName().contentEquals(filePath[1]))
+                {
+                    File files = new File(filePath[1]);
+                    ftp.enterLocalPassiveMode();
+                    FileOutputStream dfile = new FileOutputStream(files);
+                    ftp.retrieveFile(filePath[1],dfile);
+                    dfile.close();
+                    checker = false;
+                    System.out.println("File exist on server");
                 }
-                if(checker)
-                    System.out.println("File does not exist on server");
+            }
+            if(checker)
+                System.out.println("File does not exist on server");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -613,6 +687,30 @@ public class Shell {
         }
     }
 
+    //save connection
+    private void SaveConnection()
+    {
+        if (loginInfo.length == 4) {
+            String path = Shell.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            File conInfo = new File(path + "loginInfo.txt");
+            try {
+                PrintWriter conFile = new PrintWriter(conInfo);
+                conFile.println(loginInfo[0]);
+                conFile.println(loginInfo[1]);
+                conFile.println(loginInfo[2]);
+                conFile.println(loginInfo[3]);
+                conFile.close();
+                System.out.println("Current login info saved.");
+            } catch (IOException e) {
+
+            }
+        }
+        else
+        {
+            System.out.println("No successful logins to save this session.");
+        }
+    }
+
     //Check server respond to command
     private static void checkServerReply(FTPClient client)
     {
@@ -667,7 +765,7 @@ public class Shell {
         }
 
     }
-    
+
     //Change Permission
     private void changePermission(String[] inputs){
 
