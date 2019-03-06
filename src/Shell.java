@@ -19,18 +19,12 @@ Changelog (insert new changes at top)
 //and add a case
 //READ ME
 
-import java.io.*;
-import java.util.Scanner;
-import java.io.InputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.ftp.FTPFile;
+
+import java.io.*;
+import java.util.Scanner;
 
 public class Shell {
 
@@ -132,7 +126,7 @@ public class Shell {
                 break;
             case "local":
                 //to test enter local>"path on local machine"
-                if(CheckCommands(UserInCom))
+                //if(CheckCommands(UserInCom))
                     ListLocalDirectoriesAndFiles(UserInCom);
                 break;
             case "rename":
@@ -558,7 +552,7 @@ public class Shell {
     //list out all of the directories and files with a given directory
     private void ListLocalDirectoriesAndFiles(String[] input)
     {
-        File directory = new File(input[1]);
+        File directory = new File("/Users/Jack/Desktop/Localserver");
         File [] list = directory.listFiles();
         if(list == null)
         {
@@ -622,7 +616,7 @@ public class Shell {
     {
         //need to change savedir on different machine
         try {
-            FTPUtil.downloadDirectory(ftp, "\\"+input[1], "", "C:\\Users\\Jack\\Desktop\\Testing");
+            FTPUtil.downloadDirectory(ftp, "/"+input[1], "", "/Users/Jack/Desktop/Localserver");
         } catch (IOException e) {
             e.printStackTrace();
         }
