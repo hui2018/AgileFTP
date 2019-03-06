@@ -620,36 +620,11 @@ public class Shell {
     //copy all files from a input directory
     private void CopyDirectoryFromServer(String [] input)
     {
-        if(input[1].contains("."))
-        {
-            System.out.println("Please enter a correct directory path");
-            return;
-        }
-        FTPFile[] ftpFiles;
-        {
-            try {
-                ftpFiles = ftp.listFiles(input[1]);
-                if (ftpFiles != null && ftpFiles.length > 0) {
-                    //loop thru files
-                    for (FTPFile file : ftpFiles) {
-                        if (file.isFile()) {
-                            File files = new File(file.getName());
-                            ftp.enterLocalPassiveMode();
-                            FileOutputStream dfile = new FileOutputStream(files);
-                            ftp.retrieveFile(file.getName(),dfile);
-                            dfile.close();
-                            System.out.println("File " + file.getName() +" is downloaded");
-                        }
-                    }
-                }
-                else
-                {
-                    System.out.println("Please enter a correct directory path");
-                }
-            } catch (IOException e) {
-                System.out.println("Directory does not exist");
-                //e.printStackTrace();
-            }
+        //need to change savedir on different machine
+        try {
+            FTPUtil.downloadDirectory(ftp, "\\"+input[1], "", "C:\\Users\\Jack\\Desktop\\Testing");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
