@@ -520,7 +520,6 @@ public class Shell {
                 if(check)
                     System.out.println(filePath[i] + " file can't be found");
             }
-            System.out.println(counter + " files successfully retrieved.");
         } catch (IOException e) {
             System.out.println("File not found");
         }
