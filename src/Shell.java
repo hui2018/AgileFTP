@@ -86,24 +86,45 @@ public class Shell {
                 LogOut(UserInCom);
                 break;
             case "put":
-                //put file to remote server example: put c:\filelocation\testing.txt
-                if(CheckCommands(UserInCom))
-                    PutFile(UserInCom);
-                break;
-            case "putmulti":
-                //put multiple files to remote server example: putmulti c:\filelocation\testing.txt c:\other\second.txt
-                if(CheckMultipleGetPutCommand(UserInCom))
-                    PutMultipleFiles(UserInCom);
+                // Put Error
+                if(UserInCom.length < 2) {
+                    System.out.println("Unable to execute put command");
+                    System.out.println("Format: put>filepath");
+                }
+                // Single Put
+                // Put file to remote server example: put>c:\filelocation\testing.txt
+                if(UserInCom.length == 2) {
+                    if (CheckCommands(UserInCom))
+                        PutFile(UserInCom);
+                }
+
+                // Put Multi
+                // Put multiple files to remote server example: putmulti>c:\filelocation\testing.txt>c:\other\second.txt
+                if(UserInCom.length > 2) {
+                    if (CheckMultipleGetPutCommand(UserInCom))
+                        PutMultipleFiles(UserInCom);
+                }
                 break;
             case "get":
-                //to test enter get>"path of file on server"
-                if(CheckCommands(UserInCom))
-                    GetFile(UserInCom);
-                break;
-            case "getmulti":
-                //to test enter get>"path of file on server">"path of file on server">
-                if(CheckMultipleGetPutCommand(UserInCom))
-                    GetMultipleFiles(UserInCom);
+                // Get error
+                if(UserInCom.length < 2) {
+                    System.out.println("Unable to execute get command");
+                    System.out.println("Format: get>filepath");
+                }
+
+                // Single Get
+                // To test enter get>"path of file on server"
+                if(UserInCom.length == 2) {
+                    if (CheckCommands(UserInCom))
+                        GetFile(UserInCom);
+                }
+
+                // Get Multi
+                // To test enter get>"path of file on server">"path of file on server">
+                if(UserInCom.length > 2) {
+                    if (CheckMultipleGetPutCommand(UserInCom))
+                        GetMultipleFiles(UserInCom);
+                }
                 break;
             case "ls":
                 //to test just enter ls
@@ -357,22 +378,6 @@ public class Shell {
 
             // If the file exists, store it onto the server
             try {
-                /*
-                //Method 1 using InputStream
-                String remoteSave = localFile.getName();
-
-                ftp.enterLocalPassiveMode();
-                InputStream inputStream = new FileInputStream(localFile);
-
-                boolean done = ftp.storeFile(remoteSave, inputStream);
-                inputStream.close();
-
-                if (done){
-                    System.out.println("File successfully uploaded.");
-                }
-                */
-
-                //Method 2 using Outputstream
                 // Create input and output streams to upload and store file remotely
                 InputStream inputStream = new FileInputStream(localFile);
                 OutputStream outputStream = ftp.storeFileStream(remoteFile);
@@ -412,7 +417,6 @@ public class Shell {
             // Create array of files
             File [] localFile = new File[filePath.length-1];
             localFile[i-1] = new File(filePath[i]);
-
 
             // Check each file to see if it exists on drive
             if(localFile[i-1].exists()) {
@@ -466,7 +470,7 @@ public class Shell {
                     ftp.retrieveFile(filePath[1],dfile);
                     dfile.close();
                     checker = false;
-                    System.out.println("File exist on server");
+                    System.out.println("File " + filePath[1] + " successfully retrieved.");
                 }
             }
             if(checker)
@@ -494,6 +498,8 @@ public class Shell {
     private void GetMultipleFiles (String[] filePath)
     {
         FTPFile[] ftpFiles;
+        int counter = 0;
+
         try {
             ftpFiles = ftp.listFiles();
             for(int i = 1; i<filePath.length; ++i)
@@ -506,9 +512,12 @@ public class Shell {
                         FileOutputStream dfile = new FileOutputStream(files);
                         ftp.retrieveFile(filePath[i],dfile);
                         dfile.close();
+
+                        counter++;
                     }
                 }
             }
+            System.out.println(counter + " files successfully retrieved.");
         } catch (IOException e) {
             e.printStackTrace();
         }
