@@ -97,11 +97,6 @@ public class Shell {
                 break;
             case "get":
                 //to test enter get>"path of file on server"
-                if(CheckCommands(UserInCom))
-                    GetFile(UserInCom);
-                break;
-            case "getmulti":
-                //to test enter get>"path of file on server">"path of file on server">
                 if(CheckMultipleGetPutCommand(UserInCom))
                     GetMultipleFiles(UserInCom);
                 break;
@@ -494,10 +489,12 @@ public class Shell {
     private void GetMultipleFiles (String[] filePath)
     {
         FTPFile[] ftpFiles;
+        boolean check;
         try {
             ftpFiles = ftp.listFiles();
             for(int i = 1; i<filePath.length; ++i)
             {
+                check = true;
                 for (FTPFile file : ftpFiles) {
                     if(file.getName().contentEquals(filePath[i]))
                     {
@@ -506,11 +503,15 @@ public class Shell {
                         FileOutputStream dfile = new FileOutputStream(files);
                         ftp.retrieveFile(filePath[i],dfile);
                         dfile.close();
+                        System.out.println(file.getName() + " downloaded");
+                        check = false;
                     }
                 }
+                if(check)
+                    System.out.println(filePath[i] + " file can't be found");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("File not found");
         }
     }
 
