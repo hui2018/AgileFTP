@@ -504,6 +504,7 @@ public class Shell {
             ftpFiles = ftp.listFiles();
             for(int i = 1; i<filePath.length; ++i)
             {
+                check = true;
                 for (FTPFile file : ftpFiles) {
                     if(file.getName().contentEquals(filePath[i]))
                     {
@@ -512,14 +513,16 @@ public class Shell {
                         FileOutputStream dfile = new FileOutputStream(files);
                         ftp.retrieveFile(filePath[i],dfile);
                         dfile.close();
-
-                        counter++;
+                        System.out.println(file.getName() + " downloaded");
+                        check = false;
                     }
                 }
+                if(check)
+                    System.out.println(filePath[i] + " file can't be found");
             }
             System.out.println(counter + " files successfully retrieved.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("File not found");
         }
     }
 
