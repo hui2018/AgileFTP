@@ -498,7 +498,7 @@ public class Shell {
     private void GetMultipleFiles (String[] filePath)
     {
         FTPFile[] ftpFiles;
-        int counter = 0;
+        boolean check;
 
         try {
             ftpFiles = ftp.listFiles();
