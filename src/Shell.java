@@ -602,13 +602,13 @@ public class Shell {
     //rename a file name on local machine
     private void RenameFileOnLocalMachine(String [] input)
     {
-        File oldName = new File(input[1]);
-        File newName = new File(input[2]);
+        File oldName = new File("/Users/Jack/Desktop/Localserver/" + input[1]);
+        File newName = new File("/Users/Jack/Desktop/Localserver/" + input[2]);
         boolean check = oldName.renameTo(newName);
         if(check)
-            System.out.println(oldName + " was successfully renamed to: " + newName);
+            System.out.println(input[1] + " was successfully renamed to: " + input[2]);
         else
-            System.out.println(oldName + " was not successfully renamed to: " + newName);
+            System.out.println(input[1] + " was not successfully renamed to: " + input[2]);
     }
 
     //copy all files from a input directory
