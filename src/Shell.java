@@ -127,7 +127,7 @@ public class Shell {
             case "local":
                 //to test enter local>"path on local machine"
                 //if(CheckCommands(UserInCom))
-                    ListLocalDirectoriesAndFiles(UserInCom);
+                ListLocalDirectoriesAndFiles(UserInCom);
                 break;
             case "rename":
                 //to test enter rename>"file name on server">"new file name"
@@ -622,24 +622,129 @@ public class Shell {
         }
     }
 
-    //delete directory from server
     private void DeleteDirectoryFromServer(String[] pathname)
     {
+        FTPFile[] files;
+        boolean found = false;
+
         try
         {
-            for(int i = 1; i < pathname.length; i++)
-            {
-                if(ftp.removeDirectory(pathname[i]) == false)
-                    System.out.println("Unable to delete: " + pathname[i]);
-            }
+            files = ftp.listFiles();
         }
-        catch (FTPConnectionClosedException e)
+        catch(FTPConnectionClosedException e)
         {
             System.err.println("Unable to connect to server: " + e);
+            return;
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             System.err.println("Error Delete: " + e);
+            return;
+        }
+
+        for(int i = 1; i < pathname.length; i++)
+        {
+            for(int j = 0; j < files.length; j++)
+            {
+                if(pathname[i].equals(files[j].getName()))
+                {
+                    found = true;
+                }
+            }
+            if(found == false)
+                System.out.println("Unable to find: " + pathname[i]);
+
+            found = false;
+        }
+
+        for(int i = 1; i < pathname.length; i++)
+        {
+            for(int j = 0; j < files.length; j++)
+            {
+                if(files[j].isDirectory())
+                {
+                    if (pathname[i].equals(files[j].getName()))
+                    {
+                        DeletingDirectories(files[j]);
+                        try
+                        {
+                            ftp.changeToParentDirectory();
+                            ftp.removeDirectory(pathname[i]);
+                            System.out.println("Delete Successful: " + pathname[i]);
+                        }
+                        catch (FTPConnectionClosedException e)
+                        {
+                            System.err.println("Unable to connect to server: " + e);
+                        }
+                        catch (IOException e)
+                        {
+                            System.err.println("Error Delete: " + e);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void DeletingDirectories(FTPFile file)
+    {
+        if(file.isDirectory())
+        {
+            FTPFile[] ftpFiles = null;
+            try
+            {
+                ftpFiles = ftp.listFiles(file.getName());
+            }
+            catch(IOException e)
+            {
+                System.err.println(e);
+                return;
+            }
+
+            if(ftpFiles != null)
+            {
+                for(FTPFile f : ftpFiles)
+                {
+                    try
+                    {
+                        ftp.changeWorkingDirectory(file.getName());
+                    }
+                    catch (IOException e)
+                    {
+                        System.err.println(e);
+                    }
+                    DeletingDirectories(f);
+                }
+            }
+            try
+            {
+                ftp.removeDirectory(file.getName());
+            }
+            catch (FTPConnectionClosedException e)
+            {
+                System.err.println("Unable to connect to server: " + e);
+            }
+            catch (IOException e)
+            {
+                System.err.println("Error Delete: " + e);
+            }
+            return;
+        }
+        else
+        {
+            try
+            {
+                ftp.deleteFile(file.getName());
+                ftp.changeToParentDirectory();
+            }
+            catch (FTPConnectionClosedException e)
+            {
+                System.err.println("Unable to connect to server: " + e);
+            }
+            catch (IOException e)
+            {
+                System.err.println("Error Delete: " + e);
+            }
         }
     }
 
