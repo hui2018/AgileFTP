@@ -772,11 +772,22 @@ public class Shell {
     private void help ()
     {
         System.out.println("The following is a list of functions available in this client:\n" +
+                "cd>(server_folderpath)\n\tChanges the active server directory to the specified directory.\n" +
+                "chmod>(permission_code)>(file_or_directory)\n\tChanges the permission on specified file or directory to the given code.\n" +
+                "cpydir>(folder_path)\n\tCopies the specified folder on the server.\n" +
+                "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
+                "local>(local_folderpath)\n\tShows the contents at the specified local folder.\n" +
+                "log\n\tDisplay recent commands\n" +
                 "login\n\tStarts prompts to log in to a server.\n" +
                 "logout\n\tLogs out of the currently connected server.\n" +
-                "put>(local_filepath)\n\tPuts the specified file to the connected server.\n" +
-                "get>(server_filepath)\n\tGets the specified file from the connected server.\n" +
-                "log\n\tDisplay recent commands" +
+                "ls\n\tShows the contents of the current active server directory.\n" +
+                "mkdir>(new_directory_name)\n\tCreates a new directory of the given name in the current active server directory.\n" +
+                "put>(local_filepath)>(optional_other_files)\n\tPuts the specified files to the connected server.\n" +
+                "rename>(file_to_rename)>(new_name)\n\tRenames a given file on the server to the new name.\n" +
+                "renamelocal>(file_to_rename)>(new_name)\n\tRenames a given local file to the new name.\n" +
+                "rm>(filepath)>(optional_other_files)\n\tDeletes the listed files from the server.\n" +
+                "rmdir>(folderpath)>(optional_other_folders)\n\tRemoves the listed folders from the server.\n" +
+                "saveLogin\n\tSaves the last manual login from the session for future use.\n" +
                 "");
     }
 }
